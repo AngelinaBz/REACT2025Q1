@@ -5,6 +5,7 @@ export interface Film {
 
 export interface CardListState {
   films: Film[];
+  isLoading: boolean;
 }
 
 export interface CardProps {
