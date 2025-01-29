@@ -3,6 +3,7 @@ import ErrorMessage from './ErrorMessage';
 
 interface Props {
   children: ReactNode;
+  onError: () => void;
 }
 
 interface ErrorBoundaryState {
@@ -22,15 +23,20 @@ class ErrorBoundary extends Component<Props, ErrorBoundaryState> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Error caught in ErrorBoundary: ', error, errorInfo);
+    this.props.onError();
   }
 
   handleRefresh = () => {
     this.setState({ hasError: false });
   };
 
+  closeErrorMessage = () => {
+    this.setState({ hasError: false });
+  };
+
   render() {
     if (this.state.hasError) {
-      return <ErrorMessage />;
+      return <ErrorMessage onClose={this.closeErrorMessage} />;
     }
 
     return this.props.children;

@@ -1,12 +1,21 @@
 import { Component } from 'react';
+import './ErrorMessage.css';
 
-class ErrorMessage extends Component {
+interface ErrorMessageProps {
+  onClose: () => void;
+}
+
+class ErrorMessage extends Component<ErrorMessageProps> {
   render() {
     return (
-      <>
-        <h1>Something went wrong..</h1>
-        <button type="button">Back</button>
-      </>
+      <div className="overlay">
+        <div className="errorMessage">
+          <h1>Something went wrong..</h1>
+          <button type="button" onClick={this.props.onClose}>
+            Back
+          </button>
+        </div>
+      </div>
     );
   }
 }

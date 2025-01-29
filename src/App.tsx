@@ -32,13 +32,17 @@ class App extends Component<object, State> {
     }
   };
 
+  closeErrorMessage = () => {
+    this.setState({ hasError: false });
+  };
+
   render(): ReactNode {
     if (this.state.hasError) {
-      return <ErrorMessage />;
+      return <ErrorMessage onClose={this.closeErrorMessage} />;
     }
 
     return (
-      <ErrorBoundary>
+      <ErrorBoundary onError={this.handleError}>
         <Search onSearch={this.handleSearch} onError={this.handleError} />
         <CardList query={this.state.query} />
       </ErrorBoundary>
