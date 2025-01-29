@@ -1,12 +1,22 @@
 import { Component, ReactNode } from 'react';
 
-class Search extends Component<
-  { onSearch: (query: string) => void },
-  { query: string }
-> {
-  state = {
-    query: localStorage.getItem('searchQuery') || '',
-  };
+interface SearchProps {
+  onSearch: (query: string) => void;
+  onError: () => void;
+}
+
+interface SearchState {
+  query: string;
+}
+
+class Search extends Component<SearchProps, SearchState> {
+  constructor(props: SearchProps) {
+    super(props);
+    this.state = {
+      query: localStorage.getItem('searchQuery') || '',
+    };
+    this.handleError = this.handleError.bind(this);
+  }
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ query: event.target.value });
@@ -16,6 +26,10 @@ class Search extends Component<
     const trimmedQuery = this.state.query.trim();
     localStorage.setItem('searchQuery', trimmedQuery);
     this.props.onSearch(trimmedQuery);
+  };
+
+  handleError = () => {
+    this.props.onError();
   };
 
   render(): ReactNode {
@@ -28,6 +42,7 @@ class Search extends Component<
           placeholder="Search..."
         />
         <button onClick={this.handleSearch}>Search</button>
+        <button onClick={this.handleError}>Throw Error</button>
       </>
     );
   }
