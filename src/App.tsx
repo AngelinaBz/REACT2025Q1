@@ -2,8 +2,8 @@ import { Component, ReactNode } from 'react';
 import Search from './components/search/Search';
 import CardList from './components/cardList/CardList';
 import ErrorBoundary from './components/errorBoundary/ErrorBoundary';
-import './App.css';
 import ErrorMessage from './components/errorBoundary/ErrorMessage';
+import './App.css';
 
 export interface State {
   query: string;

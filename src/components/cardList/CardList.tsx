@@ -3,6 +3,7 @@ import { getAllFilmes, searchFilm } from '../../services/api';
 import { CardListState } from '../../utils/interfaces';
 import Card from '../card/Card';
 import Loading from '../loading/Loading';
+import './CardList.css';
 
 class CardList extends Component<{ query: string }, CardListState> {
   state: CardListState = {
@@ -38,7 +39,7 @@ class CardList extends Component<{ query: string }, CardListState> {
   render(): ReactNode {
     const { isLoading, films } = this.state;
     return (
-      <>
+      <section className="cardlist-container">
         {isLoading ? (
           <Loading />
         ) : (
@@ -50,7 +51,7 @@ class CardList extends Component<{ query: string }, CardListState> {
             />
           ))
         )}
-      </>
+      </section>
     );
   }
 }

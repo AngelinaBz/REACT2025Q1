@@ -1,4 +1,5 @@
 import { Component, ReactNode } from 'react';
+import './Search.css';
 
 interface SearchProps {
   onSearch: (query: string) => void;
@@ -34,7 +35,7 @@ class Search extends Component<SearchProps, SearchState> {
 
   render(): ReactNode {
     return (
-      <>
+      <section className="search-container">
         <input
           type="text"
           value={this.state.query}
@@ -43,7 +44,7 @@ class Search extends Component<SearchProps, SearchState> {
         />
         <button onClick={this.handleSearch}>Search</button>
         <button onClick={this.handleError}>Throw Error</button>
-      </>
+      </section>
     );
   }
 }

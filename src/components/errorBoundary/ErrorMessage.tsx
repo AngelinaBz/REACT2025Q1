@@ -10,7 +10,8 @@ class ErrorMessage extends Component<ErrorMessageProps> {
     return (
       <div className="overlay">
         <div className="errorMessage">
-          <h1>Something went wrong..</h1>
+          <img src="./gif.gif" alt="gif" />
+          <h1 className="error-title">Something went wrong..</h1>
           <button type="button" onClick={this.props.onClose}>
             Back
           </button>

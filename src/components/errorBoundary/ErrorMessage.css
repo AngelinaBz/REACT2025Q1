@@ -4,4 +4,14 @@
   padding: 20px;
   border-radius: 5px;
   text-align: center;
+  gap: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.error-title {
+  margin: 0;
 }
