@@ -1,18 +1,20 @@
-import { Component, ReactNode } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getAllFilmes, searchFilm } from '../../services/api';
-import { CardListState } from '../../utils/interfaces';
 import Card from '../card/Card';
 import Loading from '../loading/Loading';
+import { Film } from '../../utils/interfaces';
 import './CardList.css';
 
-class CardList extends Component<{ query: string }, CardListState> {
-  state: CardListState = {
-    films: [],
-    isLoading: false,
-  };
+interface CardListProps {
+  query: string;
+}
 
-  async loadFilms(query: string) {
-    this.setState({ isLoading: true });
+const CardList: React.FC<CardListProps> = ({ query }) => {
+  const [films, setFilms] = useState<Film[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const loadFilms = async (query: string) => {
+    setIsLoading(true);
     let data;
     try {
       if (query) {
@@ -20,40 +22,33 @@ class CardList extends Component<{ query: string }, CardListState> {
       } else {
         data = await getAllFilmes();
       }
-      this.setState({ films: data.results });
+      setFilms(data.results);
+    } catch (error) {
+      console.error('Error loading films:', error);
     } finally {
-      this.setState({ isLoading: false });
+      setIsLoading(false);
     }
-  }
+  };
 
-  async componentDidMount() {
-    this.loadFilms(this.props.query);
-  }
+  useEffect(() => {
+    loadFilms(query);
+  }, [query]);
 
-  async componentDidUpdate(prevProps: { query: string }) {
-    if (prevProps.query !== this.props.query) {
-      this.loadFilms(this.props.query);
-    }
-  }
-
-  render(): ReactNode {
-    const { isLoading, films } = this.state;
-    return (
-      <section className="cardlist-container">
-        {isLoading ? (
-          <Loading />
-        ) : (
-          films.map((film, index) => (
-            <Card
-              key={index}
-              title={film.title}
-              description={film.opening_crawl}
-            />
-          ))
-        )}
-      </section>
-    );
-  }
-}
+  return (
+    <section className="cardlist-container">
+      {isLoading ? (
+        <Loading />
+      ) : (
+        films.map((film, index) => (
+          <Card
+            key={index}
+            title={film.title}
+            description={film.opening_crawl}
+          />
+        ))
+      )}
+    </section>
+  );
+};
 
 export default CardList;

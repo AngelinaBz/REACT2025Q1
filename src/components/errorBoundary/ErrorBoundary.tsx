@@ -26,10 +26,6 @@ class ErrorBoundary extends Component<Props, ErrorBoundaryState> {
     this.props.onError();
   }
 
-  handleRefresh = () => {
-    this.setState({ hasError: false });
-  };
-
   closeErrorMessage = () => {
     this.setState({ hasError: false });
   };

@@ -1,53 +1,42 @@
-import { Component, ReactNode } from 'react';
+import React, { useState } from 'react';
 import Search from './components/search/Search';
 import CardList from './components/cardList/CardList';
 import ErrorBoundary from './components/errorBoundary/ErrorBoundary';
 import ErrorMessage from './components/errorBoundary/ErrorMessage';
+import { useSearchQuery } from './hooks/useSearchQuery';
 import './App.css';
 
-export interface State {
-  query: string;
-  hasError: boolean;
-}
+const App: React.FC = () => {
+  const [query, setQuery] = useSearchQuery();
+  const [hasError, setHasError] = useState<boolean>(false);
 
-class App extends Component<object, State> {
-  constructor(props: object) {
-    super(props);
-    this.state = {
-      query: localStorage.getItem('searchQuery') || '',
-      hasError: false,
-    };
-  }
-
-  handleSearch = (query: string) => {
-    this.setState({ query });
+  const handleSearch = (query: string) => {
+    setQuery(query);
   };
 
-  handleError = () => {
+  const handleError = () => {
     try {
       throw new Error('Testing Error');
     } catch (error) {
-      this.setState({ hasError: true });
+      setHasError(true);
       console.error('Error caught in ErrorBoundary: ', error);
     }
   };
 
-  closeErrorMessage = () => {
-    this.setState({ hasError: false });
+  const closeErrorMessage = () => {
+    setHasError(false);
   };
 
-  render(): ReactNode {
-    if (this.state.hasError) {
-      return <ErrorMessage onClose={this.closeErrorMessage} />;
-    }
-
-    return (
-      <ErrorBoundary onError={this.handleError}>
-        <Search onSearch={this.handleSearch} onError={this.handleError} />
-        <CardList query={this.state.query} />
-      </ErrorBoundary>
-    );
+  if (hasError) {
+    return <ErrorMessage onClose={closeErrorMessage} />;
   }
-}
+
+  return (
+    <ErrorBoundary onError={handleError}>
+      <Search onSearch={handleSearch} onError={handleError} />
+      <CardList query={query} />
+    </ErrorBoundary>
+  );
+};
 
 export default App;
