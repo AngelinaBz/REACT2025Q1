@@ -8,11 +8,15 @@ import Pagination from '../components/pagination/Pagination';
 import { getAllPeople, searchPeople } from '../services/api';
 import Loading from '../components/loading/Loading';
 import { Person } from '../utils/interfaces';
+import { useSearchParams } from 'react-router-dom';
 
 const MainPage: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useSearchQuery();
   const [hasError, setHasError] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState<number>(
+    parseInt(searchParams.get('page') || '1', 10)
+  );
   const [totalCount, setTotalCount] = useState<number>(0);
   const [people, setPeople] = useState<Person[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -60,6 +64,12 @@ const MainPage: React.FC = () => {
   useEffect(() => {
     loadFilms(query, page);
   }, [query, page]);
+
+  useEffect(() => {
+    setSearchParams({
+      ...(page !== undefined && { page: String(page) }),
+    });
+  }, [page, setSearchParams, query]);
 
   if (hasError) {
     return <ErrorMessage onClose={closeErrorMessage} />;
