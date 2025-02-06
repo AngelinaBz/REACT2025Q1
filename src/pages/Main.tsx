@@ -54,8 +54,10 @@ const MainPage: React.FC = () => {
       }
       setPeople(data.results);
       setTotalCount(data.count);
+      setHasError(false);
     } catch (error) {
       console.error('Error loading people:', error);
+      setHasError(true);
     } finally {
       setIsLoading(false);
     }
