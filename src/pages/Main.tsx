@@ -4,13 +4,16 @@ import ErrorBoundary from '../components/errorBoundary/ErrorBoundary';
 import ErrorMessage from '../components/errorBoundary/ErrorMessage';
 import Search from '../components/search/Search';
 import { useSearchQuery } from '../hooks/useSearchQuery';
+import Pagination from '../components/pagination/Pagination';
 
 const MainPage: React.FC = () => {
   const [query, setQuery] = useSearchQuery();
   const [hasError, setHasError] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
 
   const handleSearch = (query: string) => {
     setQuery(query);
+    setPage(1);
   };
 
   const handleError = () => {
@@ -26,6 +29,10 @@ const MainPage: React.FC = () => {
     setHasError(false);
   };
 
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
   if (hasError) {
     return <ErrorMessage onClose={closeErrorMessage} />;
   }
@@ -33,7 +40,11 @@ const MainPage: React.FC = () => {
   return (
     <ErrorBoundary onError={handleError}>
       <Search onSearch={handleSearch} onError={handleError} />
-      <CardList query={query} />
+      <Pagination
+        currentPage={page}
+        onPageChange={handlePageChange}
+      ></Pagination>
+      <CardList query={query} page={page} />
     </ErrorBoundary>
   );
 };

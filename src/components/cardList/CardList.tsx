@@ -1,50 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { getAllFilmes, searchFilm } from '../../services/api';
+import { getAllPeople, searchPeople } from '../../services/api';
 import Card from '../card/Card';
 import Loading from '../loading/Loading';
-import { Film } from '../../utils/interfaces';
+import { Person } from '../../utils/interfaces';
 import './CardList.css';
 
 interface CardListProps {
   query: string;
+  page: number;
 }
 
-const CardList: React.FC<CardListProps> = ({ query }) => {
-  const [films, setFilms] = useState<Film[]>([]);
+const CardList: React.FC<CardListProps> = ({ query, page }) => {
+  const [people, setPeople] = useState<Person[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const loadFilms = async (query: string) => {
+  const loadFilms = async (query: string, page: number) => {
     setIsLoading(true);
     let data;
     try {
       if (query) {
-        data = await searchFilm(query);
+        data = await searchPeople(query, page);
       } else {
-        data = await getAllFilmes();
+        data = await getAllPeople(page);
       }
-      setFilms(data.results);
+      setPeople(data.results);
     } catch (error) {
-      console.error('Error loading films:', error);
+      console.error('Error loading people:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    loadFilms(query);
-  }, [query]);
+    loadFilms(query, page);
+  }, [query, page]);
 
   return (
     <section className="cardlist-container">
       {isLoading ? (
         <Loading />
       ) : (
-        films.map((film, index) => (
-          <Card
-            key={index}
-            title={film.title}
-            description={film.opening_crawl}
-          />
+        people.map((people, index) => (
+          <Card key={index} name={people.name} gender={people.gender} />
         ))
       )}
     </section>

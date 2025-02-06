@@ -1,14 +1,14 @@
-export interface Film {
-  title: string;
-  opening_crawl: string;
+export interface Person {
+  name: string;
+  gender: string;
 }
 
 export interface CardListState {
-  films: Film[];
+  people: Person[];
   isLoading: boolean;
 }
 
 export interface CardProps {
-  title: string;
-  description: string;
+  name: string;
+  gender: string;
 }

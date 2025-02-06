@@ -1,0 +1,33 @@
+import React from 'react';
+
+interface PaginationProps {
+  currentPage: number;
+  onPageChange: (page: number) => void;
+}
+
+const Pagination: React.FC<PaginationProps> = ({
+  currentPage,
+  onPageChange,
+}) => {
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      onPageChange(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    onPageChange(currentPage + 1);
+  };
+
+  return (
+    <div>
+      <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+        Prev
+      </button>
+      <span>Page {currentPage}</span>
+      <button onClick={handleNextPage}>Next</button>
+    </div>
+  );
+};
+
+export default Pagination;
