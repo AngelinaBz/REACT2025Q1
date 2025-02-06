@@ -3,11 +3,13 @@ import React from 'react';
 interface PaginationProps {
   currentPage: number;
   onPageChange: (page: number) => void;
+  hasMore: boolean;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   onPageChange,
+  hasMore,
 }) => {
   const handlePreviousPage = () => {
     if (currentPage > 1) {
@@ -16,7 +18,9 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   const handleNextPage = () => {
-    onPageChange(currentPage + 1);
+    if (hasMore) {
+      onPageChange(currentPage + 1);
+    }
   };
 
   return (
@@ -25,7 +29,9 @@ const Pagination: React.FC<PaginationProps> = ({
         Prev
       </button>
       <span>Page {currentPage}</span>
-      <button onClick={handleNextPage}>Next</button>
+      <button onClick={handleNextPage} disabled={!hasMore}>
+        Next
+      </button>
     </div>
   );
 };
