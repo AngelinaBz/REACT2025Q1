@@ -5,13 +5,19 @@ import './CardList.css';
 
 interface CardListProps {
   people: Person[];
+  onPersonClick: (url: string) => void;
 }
 
-const CardList: React.FC<CardListProps> = ({ people }) => {
+const CardList: React.FC<CardListProps> = ({ people, onPersonClick }) => {
   return (
     <section className="cardlist-container">
       {people.map((people, index) => (
-        <Card key={index} name={people.name} gender={people.gender} />
+        <Card
+          key={index}
+          name={people.name}
+          gender={people.gender}
+          onClick={() => onPersonClick(people.url)}
+        />
       ))}
     </section>
   );

@@ -15,3 +15,11 @@ export const searchPeople = async (query: string, page: number = 1) => {
   }
   return res.json();
 };
+
+export const fetchDetailPerson = async (id: string) => {
+  const res = await fetch(`https://swapi.dev/api/people/${id}/`);
+  if (!res.ok) {
+    throw new Error('not found');
+  }
+  return res.json();
+};

@@ -9,6 +9,8 @@ import { getAllPeople, searchPeople } from '../services/api';
 import Loading from '../components/loading/Loading';
 import { Person } from '../utils/interfaces';
 import { useSearchParams } from 'react-router-dom';
+import DetailView from '../components/detailed/Detalied';
+import './Main.css';
 
 const MainPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,11 +21,13 @@ const MainPage: React.FC = () => {
   );
   const [totalCount, setTotalCount] = useState<number>(0);
   const [people, setPeople] = useState<Person[]>([]);
+  const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSearch = (query: string) => {
     setQuery(query);
     setPage(1);
+    closeDetailView();
   };
 
   const handleError = () => {
@@ -43,7 +47,7 @@ const MainPage: React.FC = () => {
     setPage(newPage);
   };
 
-  const loadFilms = async (query: string, page: number) => {
+  const loadPeople = async (query: string, page: number) => {
     setIsLoading(true);
     let data;
     try {
@@ -64,14 +68,33 @@ const MainPage: React.FC = () => {
   };
 
   useEffect(() => {
-    loadFilms(query, page);
+    loadPeople(query, page);
   }, [query, page]);
 
+  const handlePersonClick = (url: string) => {
+    const id = url.match(/\/(\d+)\//)?.[1];
+    if (id) {
+      setSelectedPerson(id);
+    }
+  };
+
+  const handleContainerClick = (event: React.MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.card-container')) {
+      closeDetailView();
+    }
+  };
+
+  const closeDetailView = () => setSelectedPerson(null);
+
   useEffect(() => {
-    setSearchParams({
+    const params = {
       ...(page !== undefined && { page: String(page) }),
-    });
-  }, [page, setSearchParams, query]);
+      ...(selectedPerson && { details: selectedPerson }),
+    };
+
+    setSearchParams(params);
+  }, [page, selectedPerson, setSearchParams]);
 
   if (hasError) {
     return <ErrorMessage onClose={closeErrorMessage} />;
@@ -80,18 +103,27 @@ const MainPage: React.FC = () => {
   return (
     <ErrorBoundary onError={handleError}>
       <Search onSearch={handleSearch} onError={handleError} />
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <>
-          <Pagination
-            currentPage={page}
-            onPageChange={handlePageChange}
-            hasMore={totalCount > page * 10}
-          />
-          <CardList people={people} />
-        </>
-      )}
+      <div className="main-container">
+        <div className="results-container" onClick={handleContainerClick}>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <>
+              <Pagination
+                currentPage={page}
+                onPageChange={handlePageChange}
+                hasMore={totalCount > page * 10}
+              />
+              <CardList people={people} onPersonClick={handlePersonClick} />
+            </>
+          )}
+        </div>
+        <div className="detailed-container">
+          {selectedPerson ? (
+            <DetailView personId={selectedPerson} onClose={closeDetailView} />
+          ) : null}
+        </div>
+      </div>
     </ErrorBoundary>
   );
 };
