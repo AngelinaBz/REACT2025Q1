@@ -11,14 +11,18 @@ interface CardListProps {
 const CardList: React.FC<CardListProps> = ({ people, onPersonClick }) => {
   return (
     <section className="cardlist-container">
-      {people.map((people, index) => (
-        <Card
-          key={index}
-          name={people.name}
-          gender={people.gender}
-          onClick={() => onPersonClick(people.url)}
-        />
-      ))}
+      {people.length > 0 ? (
+        people.map((people, index) => (
+          <Card
+            key={index}
+            name={people.name}
+            gender={people.gender}
+            onClick={() => onPersonClick(people.url)}
+          />
+        ))
+      ) : (
+        <p>No cards available</p>
+      )}
     </section>
   );
 };

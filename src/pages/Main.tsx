@@ -9,7 +9,7 @@ import { getAllPeople, searchPeople } from '../services/api';
 import Loading from '../components/loading/Loading';
 import { Person } from '../utils/interfaces';
 import { useSearchParams } from 'react-router-dom';
-import DetailView from '../components/detailed/Detalied';
+import DetailView from '../components/detailView/DetailView';
 import './Main.css';
 
 const MainPage: React.FC = () => {
