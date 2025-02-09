@@ -3,6 +3,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 60%;
   border-bottom: 1px solid;
+  cursor: pointer;
+  transition: all 500ms ease-in-out;
+  width: 100%;
+}
+
+.card-container:hover {
+  scale: 1.1;
 }

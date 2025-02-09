@@ -36,6 +36,7 @@ export default tseslint.config(
       ...react.configs.recommended.rules,
       ...react.configs['jsx-runtime'].rules,
       '@typescript-eslint/no-explicit-any': 'error',
+      'react/prop-types': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
     },
     settings: {

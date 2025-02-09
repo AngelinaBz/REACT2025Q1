@@ -1,15 +1,23 @@
-export const getAllFilmes = async (page: number = 1) => {
-  const res = await fetch(`https://swapi.dev/api/films/?page=${page}`);
+export const getAllPeople = async (page: number = 1) => {
+  const res = await fetch(`https://swapi.dev/api/people/?page=${page}`);
   if (!res.ok) {
     throw new Error('not found');
   }
   return res.json();
 };
 
-export const searchFilm = async (query: string, page: number = 1) => {
+export const searchPeople = async (query: string, page: number = 1) => {
   const res = await fetch(
-    `https://swapi.dev/api/films/?search=${query}&page=${page}`
+    `https://swapi.dev/api/people/?search=${query}&page=${page}`
   );
+  if (!res.ok) {
+    throw new Error('not found');
+  }
+  return res.json();
+};
+
+export const fetchDetailPerson = async (id: string) => {
+  const res = await fetch(`https://swapi.dev/api/people/${id}/`);
   if (!res.ok) {
     throw new Error('not found');
   }

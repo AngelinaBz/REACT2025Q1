@@ -1,59 +1,30 @@
-import { Component, ReactNode } from 'react';
-import { getAllFilmes, searchFilm } from '../../services/api';
-import { CardListState } from '../../utils/interfaces';
+import React from 'react';
 import Card from '../card/Card';
-import Loading from '../loading/Loading';
+import { Person } from '../../utils/interfaces';
 import './CardList.css';
 
-class CardList extends Component<{ query: string }, CardListState> {
-  state: CardListState = {
-    films: [],
-    isLoading: false,
-  };
-
-  async loadFilms(query: string) {
-    this.setState({ isLoading: true });
-    let data;
-    try {
-      if (query) {
-        data = await searchFilm(query);
-      } else {
-        data = await getAllFilmes();
-      }
-      this.setState({ films: data.results });
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  }
-
-  async componentDidMount() {
-    this.loadFilms(this.props.query);
-  }
-
-  async componentDidUpdate(prevProps: { query: string }) {
-    if (prevProps.query !== this.props.query) {
-      this.loadFilms(this.props.query);
-    }
-  }
-
-  render(): ReactNode {
-    const { isLoading, films } = this.state;
-    return (
-      <section className="cardlist-container">
-        {isLoading ? (
-          <Loading />
-        ) : (
-          films.map((film, index) => (
-            <Card
-              key={index}
-              title={film.title}
-              description={film.opening_crawl}
-            />
-          ))
-        )}
-      </section>
-    );
-  }
+interface CardListProps {
+  people: Person[];
+  onPersonClick: (url: string) => void;
 }
+
+const CardList: React.FC<CardListProps> = ({ people, onPersonClick }) => {
+  return (
+    <section className="cardlist-container">
+      {people.length > 0 ? (
+        people.map((people, index) => (
+          <Card
+            key={index}
+            name={people.name}
+            gender={people.gender}
+            onClick={() => onPersonClick(people.url)}
+          />
+        ))
+      ) : (
+        <p>No cards available</p>
+      )}
+    </section>
+  );
+};
 
 export default CardList;

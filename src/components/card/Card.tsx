@@ -1,16 +1,18 @@
-import { Component, ReactNode } from 'react';
-import { CardProps } from '../../utils/interfaces';
 import './Card.css';
 
-class Card extends Component<CardProps> {
-  render(): ReactNode {
-    return (
-      <section className="card-container">
-        <h2>{this.props.title}</h2>
-        <p className="card-container__description">{this.props.description}</p>
-      </section>
-    );
-  }
+interface CardProps {
+  name: string;
+  gender: string;
+  onClick: () => void;
 }
+
+const Card: React.FC<CardProps> = ({ name, gender, onClick }) => {
+  return (
+    <section className="card-container" onClick={onClick}>
+      <h2>{name}</h2>
+      <p className="card-container__description">{gender}</p>
+    </section>
+  );
+};
 
 export default Card;

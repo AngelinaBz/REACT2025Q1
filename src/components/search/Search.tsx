@@ -1,52 +1,39 @@
-import { Component, ReactNode } from 'react';
+import React from 'react';
 import './Search.css';
+import { useSearchQuery } from '../../hooks/useSearchQuery';
 
 interface SearchProps {
   onSearch: (query: string) => void;
   onError: () => void;
 }
 
-interface SearchState {
-  query: string;
-}
+const Search: React.FC<SearchProps> = ({ onSearch, onError }) => {
+  const [query, setQuery] = useSearchQuery();
 
-class Search extends Component<SearchProps, SearchState> {
-  constructor(props: SearchProps) {
-    super(props);
-    this.state = {
-      query: localStorage.getItem('searchQuery') || '',
-    };
-    this.handleError = this.handleError.bind(this);
-  }
-
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ query: event.target.value });
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
   };
 
-  handleSearch = () => {
-    const trimmedQuery = this.state.query.trim();
-    localStorage.setItem('searchQuery', trimmedQuery);
-    this.props.onSearch(trimmedQuery);
+  const handleSearch = () => {
+    onSearch(query.trim());
   };
 
-  handleError = () => {
-    this.props.onError();
+  const handleError = () => {
+    onError();
   };
 
-  render(): ReactNode {
-    return (
-      <section className="search-container">
-        <input
-          type="text"
-          value={this.state.query}
-          onChange={this.handleChange}
-          placeholder="Search..."
-        />
-        <button onClick={this.handleSearch}>Search</button>
-        <button onClick={this.handleError}>Throw Error</button>
-      </section>
-    );
-  }
-}
+  return (
+    <section className="search-container">
+      <input
+        type="text"
+        value={query}
+        onChange={handleChange}
+        placeholder="Search..."
+      />
+      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleError}>Throw Error</button>
+    </section>
+  );
+};
 
 export default Search;
