@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Loading from '../loading/Loading';
 import { fetchDetailPerson } from '../../services/api';
 import { Person } from '../../utils/interfaces';
+import './DetailView.css';
 
 interface DetailViewProps {
   personId: string;
@@ -17,6 +18,7 @@ const DetailView: React.FC<DetailViewProps> = ({ personId, onClose }) => {
       setIsLoading(true);
       try {
         const data = await fetchDetailPerson(personId);
+        console.log(data);
         setDetail(data);
       } catch (error) {
         console.error('Error fetching detail:', error);
@@ -37,8 +39,13 @@ const DetailView: React.FC<DetailViewProps> = ({ personId, onClose }) => {
 
   return (
     <div className="detail-view">
+      <img
+        src={`https://starwars-visualguide.com/assets/img/characters/${personId}.jpg`}
+        alt={detail.name}
+      ></img>
       <h2>{detail.name}</h2>
-      <p>{detail.gender}</p>
+      <p>Gender: {detail.gender}</p>
+      <p>Birth Year: {detail.birth_year}</p>
       <button onClick={onClose}>Close</button>
     </div>
   );

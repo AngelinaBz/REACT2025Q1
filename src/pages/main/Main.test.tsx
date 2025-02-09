@@ -1,10 +1,10 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi, Mock } from 'vitest';
 import MainPage from './Main';
-import { getAllPeople, searchPeople } from '../services/api';
+import { getAllPeople, searchPeople } from '../../services/api';
 import { BrowserRouter } from 'react-router-dom';
 
-vi.mock('../services/api');
+vi.mock('../../services/api');
 
 describe('MainPage', () => {
   beforeEach(() => {

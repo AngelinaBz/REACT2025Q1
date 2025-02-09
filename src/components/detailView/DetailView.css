@@ -1,0 +1,21 @@
+.detail-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  border: 1px solid;
+  border-radius: 0.4rem;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.detail-view img {
+  max-width: 200px;
+}
+
+.detail-view h2,
+.detail-view p {
+  margin: 0;
+}

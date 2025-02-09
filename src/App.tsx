@@ -6,8 +6,8 @@ import {
   Routes,
 } from 'react-router-dom';
 import './App.css';
-import MainPage from './pages/Main';
-import NotFoundPage from './pages/NotFound';
+import MainPage from './pages/main/Main';
+import NotFoundPage from './pages/notFound/NotFound';
 
 const App: React.FC = () => {
   return (

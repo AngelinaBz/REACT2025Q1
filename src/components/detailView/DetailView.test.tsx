@@ -13,7 +13,11 @@ describe('DetailView', () => {
   });
 
   it('fetches and displays person detail', async () => {
-    const mockPerson = { name: 'Luke Skywalker', gender: 'male' };
+    const mockPerson = {
+      name: 'Luke Skywalker',
+      gender: 'male',
+      birth_year: '19BBY',
+    };
     (fetchDetailPerson as jest.Mock).mockResolvedValueOnce(mockPerson);
 
     const { container } = render(<DetailView personId="1" onClose={vi.fn()} />);
@@ -24,6 +28,13 @@ describe('DetailView', () => {
     await waitFor(() => {
       expect(screen.getByText(/luke skywalker/i)).toBeInTheDocument();
       expect(screen.getByText(/male/i)).toBeInTheDocument();
+      expect(screen.getByText(/birth year: 19bby/i)).toBeInTheDocument();
+      const img = screen.getByRole('img', { name: /luke skywalker/i });
+      expect(img).toBeInTheDocument();
+      expect(img).toHaveAttribute(
+        'src',
+        'https://starwars-visualguide.com/assets/img/characters/1.jpg'
+      );
     });
 
     expect(screen.getByText(/close/i)).toBeInTheDocument();

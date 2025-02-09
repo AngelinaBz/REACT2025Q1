@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import CardList from '../components/cardList/CardList';
-import ErrorBoundary from '../components/errorBoundary/ErrorBoundary';
-import ErrorMessage from '../components/errorBoundary/ErrorMessage';
-import Search from '../components/search/Search';
-import { useSearchQuery } from '../hooks/useSearchQuery';
-import Pagination from '../components/pagination/Pagination';
-import { getAllPeople, searchPeople } from '../services/api';
-import Loading from '../components/loading/Loading';
-import { Person } from '../utils/interfaces';
+import CardList from '../../components/cardList/CardList';
+import ErrorBoundary from '../../components/errorBoundary/ErrorBoundary';
+import ErrorMessage from '../../components/errorBoundary/ErrorMessage';
+import Search from '../../components/search/Search';
+import { useSearchQuery } from '../../hooks/useSearchQuery';
+import Pagination from '../../components/pagination/Pagination';
+import { getAllPeople, searchPeople } from '../../services/api';
+import Loading from '../../components/loading/Loading';
+import { Person } from '../../utils/interfaces';
 import { useSearchParams } from 'react-router-dom';
-import DetailView from '../components/detailView/DetailView';
+import DetailView from '../../components/detailView/DetailView';
 import './Main.css';
 
 const MainPage: React.FC = () => {
