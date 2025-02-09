@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { describe, it, expect, afterEach, vi } from 'vitest';
+import { describe, it, expect, afterEach, vi, Mock } from 'vitest';
 import DetailView from './DetailView';
 import { fetchDetailPerson } from '../../services/api';
 
@@ -12,13 +12,42 @@ describe('DetailView', () => {
     vi.clearAllMocks();
   });
 
+  it('displays loading indicator while fetching data', async () => {
+    const { container } = render(<DetailView personId="1" onClose={vi.fn()} />);
+
+    expect(container.querySelector('.loading')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(container.querySelector('.loading')).not.toBeInTheDocument();
+    });
+  });
+
+  it('ensures clicking the close button hides the component', async () => {
+    const mockPerson = {
+      name: 'Luke Skywalker',
+      gender: 'male',
+      birth_year: '19BBY',
+    };
+
+    (fetchDetailPerson as Mock).mockResolvedValueOnce(mockPerson);
+
+    const handleClose = vi.fn();
+    render(<DetailView personId="1" onClose={handleClose} />);
+    await waitFor(() => {
+      expect(screen.getByText(/luke skywalker/i)).toBeInTheDocument();
+    });
+
+    screen.getByText(/close/i).click();
+
+    expect(handleClose).toHaveBeenCalled();
+  });
+
   it('fetches and displays person detail', async () => {
     const mockPerson = {
       name: 'Luke Skywalker',
       gender: 'male',
       birth_year: '19BBY',
     };
-    (fetchDetailPerson as jest.Mock).mockResolvedValueOnce(mockPerson);
+    (fetchDetailPerson as Mock).mockResolvedValueOnce(mockPerson);
 
     const { container } = render(<DetailView personId="1" onClose={vi.fn()} />);
 
@@ -41,9 +70,7 @@ describe('DetailView', () => {
   });
 
   it('handles error during fetch', async () => {
-    (fetchDetailPerson as jest.Mock).mockRejectedValueOnce(
-      new Error('not found')
-    );
+    (fetchDetailPerson as Mock).mockRejectedValueOnce(new Error('not found'));
 
     render(<DetailView personId="1" onClose={vi.fn()} />);
 
