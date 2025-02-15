@@ -5,11 +5,13 @@ import ErrorMessage from '../../components/errorBoundary/ErrorMessage';
 import Search from '../../components/search/Search';
 import { useSearchQuery } from '../../hooks/useSearchQuery';
 import Pagination from '../../components/pagination/Pagination';
-import { getAllPeople, searchPeople } from '../../services/api';
 import Loading from '../../components/loading/Loading';
-import { Person } from '../../utils/interfaces';
 import { useSearchParams } from 'react-router-dom';
 import DetailView from '../../components/detailView/DetailView';
+import {
+  useGetAllPeopleQuery,
+  useSearchPeopleQuery,
+} from '../../redux/slices/api';
 import './Main.css';
 
 const MainPage: React.FC = () => {
@@ -19,10 +21,29 @@ const MainPage: React.FC = () => {
   const [page, setPage] = useState<number>(
     parseInt(searchParams.get('page') || '1', 10)
   );
-  const [totalCount, setTotalCount] = useState<number>(0);
-  const [people, setPeople] = useState<Person[]>([]);
   const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {
+    data: allPeopleData,
+    isLoading: isLoadingAll,
+    error: errorAll,
+  } = useGetAllPeopleQuery(page);
+  const {
+    data: searchPeopleData,
+    isLoading: isLoadingSearch,
+    error: errorSearch,
+  } = useSearchPeopleQuery({ query, page }, { skip: !query });
+
+  useEffect(() => {
+    if (errorAll || errorSearch) {
+      setHasError(true);
+    }
+  }, [errorAll, errorSearch]);
+
+  const people = query ? searchPeopleData?.results : allPeopleData?.results;
+  const totalCount = query
+    ? searchPeopleData?.count || 0
+    : allPeopleData?.count || 0;
+  const isLoading = isLoadingAll || isLoadingSearch;
 
   const handleSearch = (query: string) => {
     setQuery(query);
@@ -46,30 +67,6 @@ const MainPage: React.FC = () => {
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
-
-  const loadPeople = async (query: string, page: number) => {
-    setIsLoading(true);
-    let data;
-    try {
-      if (query) {
-        data = await searchPeople(query, page);
-      } else {
-        data = await getAllPeople(page);
-      }
-      setPeople(data.results);
-      setTotalCount(data.count);
-      setHasError(false);
-    } catch (error) {
-      console.error('Error loading people:', error);
-      setHasError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadPeople(query, page);
-  }, [query, page]);
 
   const handlePersonClick = (url: string) => {
     const id = url.match(/\/(\d+)\//)?.[1];
