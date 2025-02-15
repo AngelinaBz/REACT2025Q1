@@ -10,20 +10,25 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ id, name, gender, onClick }) => {
-  const selectedIds = useAppSelector((state) => state.selected.selectedIds);
+  const selectedPeople = useAppSelector(
+    (state) => state.selected.selectedPeople
+  );
   const dispatch = useAppDispatch();
-  const isSelected = selectedIds.includes(id!);
+  const isSelected = selectedPeople.some((person) => person.id === id);
   const handleCheckboxChange = () => {
+    const personData = { id: id!, name, gender };
     if (isSelected) {
       dispatch(unselectItem(id!));
     } else {
-      dispatch(selectItem(id!));
+      dispatch(selectItem(personData));
     }
   };
   return (
-    <section className="card-container" onClick={onClick}>
-      <h2>{name}</h2>
-      <p className="card-container__description">{gender}</p>
+    <section className="card-container">
+      <div className="card-information" onClick={onClick}>
+        <h2>{name}</h2>
+        <p>{gender}</p>
+      </div>
       <input
         type="checkbox"
         checked={isSelected}

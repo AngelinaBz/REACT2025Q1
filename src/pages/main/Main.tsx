@@ -12,6 +12,8 @@ import {
   useGetAllPeopleQuery,
   useSearchPeopleQuery,
 } from '../../redux/slices/api';
+import { useAppSelector } from '../../redux/store';
+import Flyout from '../../components/flyout/Flyout';
 import './Main.css';
 
 const MainPage: React.FC = () => {
@@ -22,6 +24,9 @@ const MainPage: React.FC = () => {
     parseInt(searchParams.get('page') || '1', 10)
   );
   const [detailedPerson, setDetailedPerson] = useState<string | null>(null);
+  const selectedPeople = useAppSelector(
+    (state) => state.selected.selectedPeople
+  );
   const {
     data: allPeopleData,
     isLoading: isLoadingAll,
@@ -121,6 +126,7 @@ const MainPage: React.FC = () => {
           ) : null}
         </div>
       </div>
+      {selectedPeople.length > 0 && <Flyout />}
     </ErrorBoundary>
   );
 };

@@ -9,6 +9,13 @@
   width: 100%;
 }
 
+.card-information {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .card-container:hover {
   scale: 1.1;
 }

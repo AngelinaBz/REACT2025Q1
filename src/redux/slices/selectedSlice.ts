@@ -1,29 +1,37 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+interface Person {
+  id: string;
+  name: string;
+  gender: string;
+}
+
 interface SelectedState {
-  selectedIds: string[];
+  selectedPeople: Person[];
 }
 
 const initialState: SelectedState = {
-  selectedIds: [],
+  selectedPeople: [],
 };
 
 const selectedSlice = createSlice({
   name: 'selected',
   initialState,
   reducers: {
-    selectItem: (state, action: PayloadAction<string>) => {
-      if (!state.selectedIds.includes(action.payload)) {
-        state.selectedIds.push(action.payload);
+    selectItem: (state, action: PayloadAction<Person>) => {
+      if (
+        !state.selectedPeople.some((person) => person.id === action.payload.id)
+      ) {
+        state.selectedPeople.push(action.payload);
       }
     },
     unselectItem: (state, action: PayloadAction<string>) => {
-      state.selectedIds = state.selectedIds.filter(
-        (id) => id !== action.payload
+      state.selectedPeople = state.selectedPeople.filter(
+        (person) => person.id !== action.payload
       );
     },
     unselectAllItems: (state) => {
-      state.selectedIds = [];
+      state.selectedPeople = [];
     },
   },
 });
@@ -31,6 +39,6 @@ const selectedSlice = createSlice({
 export const { selectItem, unselectItem, unselectAllItems } =
   selectedSlice.actions;
 export const selectSelectedIds = (state: { selected: SelectedState }) =>
-  state.selected.selectedIds;
+  state.selected.selectedPeople;
 
 export default selectedSlice.reducer;
