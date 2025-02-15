@@ -21,7 +21,7 @@ const MainPage: React.FC = () => {
   const [page, setPage] = useState<number>(
     parseInt(searchParams.get('page') || '1', 10)
   );
-  const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
+  const [detailedPerson, setDetailedPerson] = useState<string | null>(null);
   const {
     data: allPeopleData,
     isLoading: isLoadingAll,
@@ -71,7 +71,7 @@ const MainPage: React.FC = () => {
   const handlePersonClick = (url: string) => {
     const id = url.match(/\/(\d+)\//)?.[1];
     if (id) {
-      setSelectedPerson(id);
+      setDetailedPerson(id);
     }
   };
 
@@ -82,16 +82,16 @@ const MainPage: React.FC = () => {
     }
   };
 
-  const closeDetailView = () => setSelectedPerson(null);
+  const closeDetailView = () => setDetailedPerson(null);
 
   useEffect(() => {
     const params = {
       ...(page !== undefined && { page: String(page) }),
-      ...(selectedPerson && { details: selectedPerson }),
+      ...(detailedPerson && { details: detailedPerson }),
     };
 
     setSearchParams(params);
-  }, [page, selectedPerson, setSearchParams]);
+  }, [page, detailedPerson, setSearchParams]);
 
   if (hasError) {
     return <ErrorMessage onClose={closeErrorMessage} />;
@@ -116,8 +116,8 @@ const MainPage: React.FC = () => {
           )}
         </div>
         <div className="detailed-container">
-          {selectedPerson ? (
-            <DetailView personId={selectedPerson} onClose={closeDetailView} />
+          {detailedPerson ? (
+            <DetailView personId={detailedPerson} onClose={closeDetailView} />
           ) : null}
         </div>
       </div>

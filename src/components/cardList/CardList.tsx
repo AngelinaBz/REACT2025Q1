@@ -15,6 +15,7 @@ const CardList: React.FC<CardListProps> = ({ people, onPersonClick }) => {
         people.map((people, index) => (
           <Card
             key={index}
+            id={people.url.match(/\/(\d+)\//)?.[1]}
             name={people.name}
             gender={people.gender}
             onClick={() => onPersonClick(people.url)}
