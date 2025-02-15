@@ -13,7 +13,25 @@ const Flyout: React.FC = () => {
     dispatch(unselectAllItems());
   };
 
-  const downloadCSV = () => {};
+  const downloadCSV = () => {
+    const csvContent =
+      'data:text/csv;charset=utf-8,' +
+      selectedPeople
+        .map((person) => `${person.id},${person.name},${person.gender}`)
+        .join('\n');
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute(
+      'download',
+      `${selectedPeople.length}_starwarspeople.csv`
+    );
+    document.body.appendChild(link);
+
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="flyout">
