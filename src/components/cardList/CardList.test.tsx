@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import CardList from './CardList';
+import { Provider } from 'react-redux';
+import { store } from '../../redux/store';
 import { Person } from '../../utils/interfaces';
 
 describe('CardList Component', () => {
@@ -19,7 +21,11 @@ describe('CardList Component', () => {
     ];
     const onPersonClick = vi.fn();
 
-    render(<CardList people={people} onPersonClick={onPersonClick} />);
+    render(
+      <Provider store={store}>
+        <CardList people={people} onPersonClick={onPersonClick} />
+      </Provider>
+    );
 
     const cards = screen.getAllByRole('heading');
     expect(cards.length).toBe(people.length);
@@ -28,7 +34,11 @@ describe('CardList Component', () => {
   it('displays a message when no cards are available', () => {
     const onPersonClick = vi.fn();
 
-    render(<CardList people={[]} onPersonClick={onPersonClick} />);
+    render(
+      <Provider store={store}>
+        <CardList people={[]} onPersonClick={onPersonClick} />
+      </Provider>
+    );
 
     expect(screen.getByText(/no cards available/i)).toBeInTheDocument();
   });

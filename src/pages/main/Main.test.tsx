@@ -3,6 +3,8 @@ import { vi, Mock } from 'vitest';
 import MainPage from './Main';
 import { getAllPeople, fetchDetailPerson } from '../../services/api';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../redux/store';
 
 vi.mock('../../services/api');
 
@@ -30,7 +32,9 @@ describe('MainPage', () => {
 
     render(
       <BrowserRouter>
-        <MainPage />
+        <Provider store={store}>
+          <MainPage />
+        </Provider>
       </BrowserRouter>
     );
 
@@ -64,7 +68,9 @@ describe('MainPage', () => {
 
     render(
       <BrowserRouter>
-        <MainPage />
+        <Provider store={store}>
+          <MainPage />
+        </Provider>
       </BrowserRouter>
     );
 
@@ -91,7 +97,9 @@ describe('MainPage', () => {
 
     render(
       <BrowserRouter>
-        <MainPage />
+        <Provider store={store}>
+          <MainPage />
+        </Provider>
       </BrowserRouter>
     );
 
@@ -105,7 +113,9 @@ describe('MainPage', () => {
 
     render(
       <BrowserRouter>
-        <MainPage />
+        <Provider store={store}>
+          <MainPage />
+        </Provider>
       </BrowserRouter>
     );
 
@@ -178,7 +188,9 @@ describe('MainPage', () => {
 
     render(
       <BrowserRouter>
-        <MainPage />
+        <Provider store={store}>
+          <MainPage />
+        </Provider>
       </BrowserRouter>
     );
 
