@@ -71,4 +71,41 @@ describe('Flyout', () => {
 
     expect(store.getState().selected.selectedPeople).toHaveLength(0);
   });
+
+  it('generates correct CSV content and triggers download', () => {
+    store.dispatch(
+      selectItem({ id: '1', name: 'Luke Skywalker', gender: 'male' })
+    );
+    store.dispatch(
+      selectItem({ id: '2', name: 'Leia Organa', gender: 'female' })
+    );
+
+    render(
+      <Provider store={store}>
+        <Flyout />
+      </Provider>
+    );
+
+    const downloadButton = screen.getByRole('button', { name: /download/i });
+    Object.defineProperty(window, 'navigator', {
+      value: {
+        clipboard: {
+          writeText: vi.fn(),
+        },
+      },
+    });
+    const createElementSpy = vi.spyOn(document, 'createElement');
+    const appendChildSpy = vi.spyOn(document.body, 'appendChild');
+    const removeChildSpy = vi.spyOn(document.body, 'removeChild');
+
+    fireEvent.click(downloadButton);
+
+    expect(createElementSpy).toHaveBeenCalledWith('a');
+    expect(appendChildSpy).toHaveBeenCalled();
+    expect(createElementSpy).toHaveBeenCalledTimes(1);
+
+    createElementSpy.mockRestore();
+    appendChildSpy.mockRestore();
+    removeChildSpy.mockRestore();
+  });
 });
