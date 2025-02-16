@@ -1,6 +1,7 @@
 import Loading from '../loading/Loading';
 import { useFetchDetailPersonQuery } from '../../redux/slices/api';
 import './DetailView.css';
+import { useTheme } from '../themeContext/UseTheme';
 
 interface DetailViewProps {
   personId: string;
@@ -13,6 +14,7 @@ const DetailView: React.FC<DetailViewProps> = ({ personId, onClose }) => {
     error,
     isLoading,
   } = useFetchDetailPersonQuery(personId);
+  const { theme } = useTheme();
 
   if (isLoading) {
     return <Loading />;
@@ -35,7 +37,9 @@ const DetailView: React.FC<DetailViewProps> = ({ personId, onClose }) => {
       <h2>{detail.name}</h2>
       <p>Gender: {detail.gender}</p>
       <p>Birth Year: {detail.birth_year}</p>
-      <button onClick={onClose}>Close</button>
+      <button className={`button-${theme}`} onClick={onClose}>
+        Close
+      </button>
     </div>
   );
 };

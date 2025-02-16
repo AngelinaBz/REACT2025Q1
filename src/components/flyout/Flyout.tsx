@@ -1,9 +1,11 @@
 import React from 'react';
 import { useAppSelector, useAppDispatch } from '../../redux/store';
 import { unselectAllItems } from '../../redux/slices/selectedSlice';
+import { useTheme } from '../themeContext/UseTheme';
 import './Flyout.css';
 
 const Flyout: React.FC = () => {
+  const { theme } = useTheme();
   const dispatch = useAppDispatch();
   const selectedPeople = useAppSelector(
     (state) => state.selected.selectedPeople
@@ -34,12 +36,16 @@ const Flyout: React.FC = () => {
   };
 
   return (
-    <div className="flyout">
+    <div className={`flyout flyout-${theme}`}>
       {selectedPeople.length > 0 && (
-        <div>
+        <div className="selected-container">
           <p>{selectedPeople.length} selected items</p>
-          <button onClick={handleUnselectAll}>Unselect all</button>
-          <button onClick={downloadCSV}>Download</button>
+          <button className={`button-${theme}`} onClick={handleUnselectAll}>
+            Unselect all
+          </button>
+          <button className={`button-${theme}`} onClick={downloadCSV}>
+            Download
+          </button>
         </div>
       )}
     </div>
