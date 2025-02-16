@@ -6,12 +6,8 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from '../themeContext/ThemeProvider';
 import { useFetchDetailPersonQuery } from '../../redux/slices/api';
 
-interface ApiModule {
-  useFetchDetailPersonQuery: typeof useFetchDetailPersonQuery;
-}
-
-vi.mock('../../redux/slices/api', async (importOriginal) => {
-  const actual: ApiModule = (await importOriginal()) as ApiModule;
+vi.mock(import('../../redux/slices/api'), async (importOriginal) => {
+  const actual = await importOriginal();
   return {
     ...actual,
     useFetchDetailPersonQuery: vi.fn(),

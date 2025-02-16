@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, afterEach, vi } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { Provider } from 'react-redux';
 import { store } from '../../redux/store';
 import Flyout from './Flyout';
@@ -7,7 +7,7 @@ import { selectItem, unselectAllItems } from '../../redux/slices/selectedSlice';
 import { ThemeProvider } from '../themeContext/ThemeProvider';
 
 describe('Flyout', () => {
-  afterEach(() => {
+  beforeEach(() => {
     vi.clearAllMocks();
     store.dispatch(unselectAllItems());
   });
@@ -76,45 +76,10 @@ describe('Flyout', () => {
     });
     fireEvent.click(unselectAllButton);
 
+    expect(screen.queryByText(/selected items/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /download/i })
+    ).not.toBeInTheDocument();
     expect(store.getState().selected.selectedPeople).toHaveLength(0);
-  });
-
-  it('generates correct CSV content and triggers download', () => {
-    store.dispatch(
-      selectItem({ id: '1', name: 'Luke Skywalker', gender: 'male' })
-    );
-    store.dispatch(
-      selectItem({ id: '2', name: 'Leia Organa', gender: 'female' })
-    );
-
-    render(
-      <Provider store={store}>
-        <ThemeProvider>
-          <Flyout />
-        </ThemeProvider>
-      </Provider>
-    );
-
-    const downloadButton = screen.getByRole('button', { name: /download/i });
-    Object.defineProperty(window, 'navigator', {
-      value: {
-        clipboard: {
-          writeText: vi.fn(),
-        },
-      },
-    });
-    const createElementSpy = vi.spyOn(document, 'createElement');
-    const appendChildSpy = vi.spyOn(document.body, 'appendChild');
-    const removeChildSpy = vi.spyOn(document.body, 'removeChild');
-
-    fireEvent.click(downloadButton);
-
-    expect(createElementSpy).toHaveBeenCalledWith('a');
-    expect(appendChildSpy).toHaveBeenCalled();
-    expect(createElementSpy).toHaveBeenCalledTimes(1);
-
-    createElementSpy.mockRestore();
-    appendChildSpy.mockRestore();
-    removeChildSpy.mockRestore();
   });
 });

@@ -11,59 +11,21 @@ import {
 } from '../../redux/slices/api';
 import { ThemeProvider } from '../../components/themeContext/ThemeProvider';
 
-interface ApiModule {
-  useGetAllPeopleQuery: typeof useGetAllPeopleQuery;
-  useSearchPeopleQuery: typeof useSearchPeopleQuery;
-  useFetchDetailPersonQuery: typeof useFetchDetailPersonQuery;
-}
-
-vi.mock('../../redux/slices/api', async (importOriginal) => {
-  const actual: ApiModule = (await importOriginal()) as ApiModule;
+vi.mock(import('../../redux/slices/api'), async (importOriginal) => {
+  const actual = await importOriginal();
   return {
     ...actual,
-    useGetAllPeopleQuery: vi.fn().mockImplementation(() => ({
-      data: {
-        results: [
-          {
-            name: 'Luke Skywalker',
-            gender: 'male',
-            url: 'https://swapi.dev/api/people/1/',
-          },
-        ],
-        count: 1,
-      },
-      isLoading: false,
-      isError: false,
-    })),
-    useFetchDetailPersonQuery: vi.fn(() => ({
-      name: 'Luke Skywalker',
-      gender: 'male',
-      birth_year: '19BBY',
-    })),
-    useSearchPeopleQuery: vi.fn().mockImplementation(() => ({
-      data: {
-        results: [
-          {
-            name: 'Luke Skywalker',
-            gender: 'male',
-            url: 'https://swapi.dev/api/people/1/',
-          },
-        ],
-        count: 1,
-      },
-      isLoading: false,
-      isError: false,
-    })),
+    useGetAllPeopleQuery: vi.fn(),
+    useFetchDetailPersonQuery: vi.fn(),
+    useSearchPeopleQuery: vi.fn(),
   };
 });
 
 describe('MainPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
 
-  it('should open detail view when a card is clicked', async () => {
-    (useGetAllPeopleQuery as Mock).mockReturnValueOnce({
+    (useGetAllPeopleQuery as Mock).mockReturnValue({
       data: {
         results: [
           {
@@ -78,7 +40,7 @@ describe('MainPage', () => {
       isError: false,
     });
 
-    (useFetchDetailPersonQuery as Mock).mockReturnValueOnce({
+    (useFetchDetailPersonQuery as Mock).mockReturnValue({
       data: {
         name: 'Luke Skywalker',
         gender: 'male',
@@ -88,6 +50,16 @@ describe('MainPage', () => {
       isError: false,
     });
 
+    (useSearchPeopleQuery as Mock).mockReturnValue({
+      data: {
+        results: [],
+      },
+      isLoading: false,
+      isError: false,
+    });
+  });
+
+  it('should open detail view when a card is clicked', async () => {
     render(
       <BrowserRouter>
         <Provider store={store}>
@@ -103,9 +75,12 @@ describe('MainPage', () => {
 
     await waitFor(() => {
       expect(useFetchDetailPersonQuery).toHaveBeenCalledWith('1');
-      expect(
-        screen.getByRole('heading', { name: /Luke Skywalker/i })
-      ).toBeInTheDocument();
+      const headings = screen.getAllByRole('heading', {
+        name: 'Luke Skywalker',
+      });
+      expect(headings.length).toBe(2);
+      expect(headings[0]).toBeInTheDocument();
+      expect(headings[1]).toBeInTheDocument();
     });
   });
 
@@ -123,5 +98,65 @@ describe('MainPage', () => {
     await waitFor(() => {
       expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
     });
+  });
+
+  it('should display loading indicator when data is loading', () => {
+    (useGetAllPeopleQuery as Mock).mockReturnValue({
+      isLoading: true,
+    });
+
+    const { container } = render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <ThemeProvider>
+            <MainPage />
+          </ThemeProvider>
+        </Provider>
+      </BrowserRouter>
+    );
+
+    const loadingIndicator = container.querySelector('.loading');
+    expect(loadingIndicator).toBeInTheDocument();
+  });
+
+  it('should display error message when both queries return errors', async () => {
+    (useSearchPeopleQuery as Mock).mockReturnValue({
+      isLoading: false,
+      error: new Error('Error searching people'),
+    });
+
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <ThemeProvider>
+            <MainPage />
+          </ThemeProvider>
+        </Provider>
+      </BrowserRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText(/Something went wrong../i)).toBeInTheDocument();
+    });
+  });
+
+  it('should handle error when handleError is called', async () => {
+    const originalErrorFunction = console.error;
+    console.error = vi.fn();
+
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <ThemeProvider>
+            <MainPage />
+          </ThemeProvider>
+        </Provider>
+      </BrowserRouter>
+    );
+
+    fireEvent.click(screen.getByText('Throw Error'));
+    expect(screen.getByText(/Something went wrong../i)).toBeInTheDocument();
+
+    console.error = originalErrorFunction;
   });
 });
