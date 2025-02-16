@@ -1,6 +1,7 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import Search from './Search';
+import { ThemeProvider } from '../themeContext/ThemeProvider';
 
 const mockLocalStorage = (() => {
   let store: { [key: string]: string } = {};
@@ -32,7 +33,11 @@ describe('Search Component', () => {
   });
 
   it('should save the entered value to local storage when the Search button is clicked', () => {
-    render(<Search onSearch={onSearchMock} onError={onErrorMock} />);
+    render(
+      <ThemeProvider>
+        <Search onSearch={onSearchMock} onError={onErrorMock} />
+      </ThemeProvider>
+    );
 
     const input = screen.getByPlaceholderText('Search...');
     const searchButton = screen.getByRole('button', { name: /search/i });
@@ -47,7 +52,11 @@ describe('Search Component', () => {
   it('should retrieve the value from local storage upon mounting', () => {
     mockLocalStorage.setItem('searchQuery', 'stored query');
 
-    render(<Search onSearch={onSearchMock} onError={onErrorMock} />);
+    render(
+      <ThemeProvider>
+        <Search onSearch={onSearchMock} onError={onErrorMock} />
+      </ThemeProvider>
+    );
 
     const input = screen.getByPlaceholderText('Search...');
 
@@ -55,7 +64,11 @@ describe('Search Component', () => {
   });
 
   it('should call onError when the Throw Error button is clicked', () => {
-    render(<Search onSearch={onSearchMock} onError={onErrorMock} />);
+    render(
+      <ThemeProvider>
+        <Search onSearch={onSearchMock} onError={onErrorMock} />
+      </ThemeProvider>
+    );
 
     const throwErrorButton = screen.getByRole('button', {
       name: /throw error/i,

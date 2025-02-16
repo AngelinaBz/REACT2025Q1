@@ -3,6 +3,7 @@ import { describe, it, expect, afterEach, vi, Mock } from 'vitest';
 import DetailView from './DetailView';
 import { store } from '../../redux/store';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from '../themeContext/ThemeProvider';
 import { useFetchDetailPersonQuery } from '../../redux/slices/api';
 
 interface ApiModule {
@@ -31,7 +32,9 @@ describe('DetailView', () => {
 
     const { container } = render(
       <Provider store={store}>
-        <DetailView personId="1" onClose={vi.fn()} />
+        <ThemeProvider>
+          <DetailView personId="1" onClose={vi.fn()} />
+        </ThemeProvider>
       </Provider>
     );
 
@@ -53,7 +56,9 @@ describe('DetailView', () => {
 
     render(
       <Provider store={store}>
-        <DetailView personId="1" onClose={vi.fn()} />
+        <ThemeProvider>
+          <DetailView personId="1" onClose={vi.fn()} />
+        </ThemeProvider>
       </Provider>
     );
 
@@ -81,7 +86,9 @@ describe('DetailView', () => {
 
     render(
       <Provider store={store}>
-        <DetailView personId="1" onClose={vi.fn()} />
+        <ThemeProvider>
+          <DetailView personId="1" onClose={vi.fn()} />
+        </ThemeProvider>
       </Provider>
     );
 

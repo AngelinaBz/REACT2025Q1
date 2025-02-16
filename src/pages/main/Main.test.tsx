@@ -9,6 +9,7 @@ import {
   useSearchPeopleQuery,
   useFetchDetailPersonQuery,
 } from '../../redux/slices/api';
+import { ThemeProvider } from '../../components/themeContext/ThemeProvider';
 
 interface ApiModule {
   useGetAllPeopleQuery: typeof useGetAllPeopleQuery;
@@ -90,7 +91,9 @@ describe('MainPage', () => {
     render(
       <BrowserRouter>
         <Provider store={store}>
-          <MainPage />
+          <ThemeProvider>
+            <MainPage />
+          </ThemeProvider>
         </Provider>
       </BrowserRouter>
     );
@@ -110,7 +113,9 @@ describe('MainPage', () => {
     render(
       <BrowserRouter>
         <Provider store={store}>
-          <MainPage />
+          <ThemeProvider>
+            <MainPage />
+          </ThemeProvider>
         </Provider>
       </BrowserRouter>
     );

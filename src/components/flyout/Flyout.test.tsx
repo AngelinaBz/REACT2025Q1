@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from '../../redux/store';
 import Flyout from './Flyout';
 import { selectItem, unselectAllItems } from '../../redux/slices/selectedSlice';
+import { ThemeProvider } from '../themeContext/ThemeProvider';
 
 describe('Flyout', () => {
   afterEach(() => {
@@ -14,7 +15,9 @@ describe('Flyout', () => {
   it('renders correctly with no selected items', () => {
     render(
       <Provider store={store}>
-        <Flyout />
+        <ThemeProvider>
+          <Flyout />
+        </ThemeProvider>
       </Provider>
     );
 
@@ -37,7 +40,9 @@ describe('Flyout', () => {
 
     render(
       <Provider store={store}>
-        <Flyout />
+        <ThemeProvider>
+          <Flyout />
+        </ThemeProvider>
       </Provider>
     );
 
@@ -60,7 +65,9 @@ describe('Flyout', () => {
 
     render(
       <Provider store={store}>
-        <Flyout />
+        <ThemeProvider>
+          <Flyout />
+        </ThemeProvider>
       </Provider>
     );
 
@@ -82,7 +89,9 @@ describe('Flyout', () => {
 
     render(
       <Provider store={store}>
-        <Flyout />
+        <ThemeProvider>
+          <Flyout />
+        </ThemeProvider>
       </Provider>
     );
 
