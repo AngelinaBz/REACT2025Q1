@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import ThemeToggle from './ThemeToggle';
+import ThemeSelector from './ThemeSelector';
 import { vi } from 'vitest';
 import { ThemeProvider } from './ThemeProvider';
 import { useTheme } from './UseTheme';
@@ -14,7 +14,7 @@ describe('ThemeContext', () => {
   it('should have an initial light theme', () => {
     render(
       <ThemeProvider>
-        <ThemeToggle />
+        <ThemeSelector />
       </ThemeProvider>
     );
 
@@ -24,7 +24,7 @@ describe('ThemeContext', () => {
   it('should toggle theme between light and dark', () => {
     render(
       <ThemeProvider>
-        <ThemeToggle />
+        <ThemeSelector />
       </ThemeProvider>
     );
 

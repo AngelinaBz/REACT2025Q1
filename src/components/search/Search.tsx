@@ -1,8 +1,8 @@
 import React from 'react';
 import './Search.css';
 import { useSearchQuery } from '../../hooks/useSearchQuery';
-import ThemeToggle from '../themeContext/ThemeToggle';
 import { useTheme } from '../themeContext/UseTheme';
+import ThemeSelector from '../themeContext/ThemeSelector';
 
 interface SearchProps {
   onSearch: (query: string) => void;
@@ -39,7 +39,7 @@ const Search: React.FC<SearchProps> = ({ onSearch, onError }) => {
       <button className={`button-${theme}`} onClick={handleError}>
         Throw Error
       </button>
-      <ThemeToggle />
+      <ThemeSelector />
     </section>
   );
 };
