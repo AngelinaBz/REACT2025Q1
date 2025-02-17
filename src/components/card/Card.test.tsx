@@ -19,6 +19,7 @@ describe('Card Component', () => {
           id="1"
           name="Luke Skywalker"
           gender="male"
+          url="https://swapi.dev/api/people/1/"
           onClick={mockOnClick}
         />
       </Provider>
@@ -35,6 +36,7 @@ describe('Card Component', () => {
           id="1"
           name="Luke Skywalker"
           gender="male"
+          url="https://swapi.dev/api/people/1/"
           onClick={mockOnClick}
         />
       </Provider>
@@ -46,7 +48,12 @@ describe('Card Component', () => {
   it('should check the checkbox based on selected state', () => {
     const mockOnClick = vi.fn();
     store.dispatch(
-      selectItem({ id: '1', name: 'Luke Skywalker', gender: 'male' })
+      selectItem({
+        id: '1',
+        name: 'Luke Skywalker',
+        gender: 'male',
+        url: 'https://swapi.dev/api/people/1/',
+      })
     );
 
     render(
@@ -55,6 +62,7 @@ describe('Card Component', () => {
           id="1"
           name="Luke Skywalker"
           gender="male"
+          url="https://swapi.dev/api/people/1/"
           onClick={mockOnClick}
         />
       </Provider>
@@ -64,11 +72,22 @@ describe('Card Component', () => {
 
   it('should remove selected item from store when checkbox is unchecked', () => {
     store.dispatch(
-      selectItem({ id: '1', name: 'Luke Skywalker', gender: 'male' })
+      selectItem({
+        id: '1',
+        name: 'Luke Skywalker',
+        gender: 'male',
+        url: 'https://swapi.dev/api/people/1/',
+      })
     );
     render(
       <Provider store={store}>
-        <Card id="1" name="Luke Skywalker" gender="male" onClick={() => {}} />
+        <Card
+          id="1"
+          name="Luke Skywalker"
+          gender="male"
+          url="https://swapi.dev/api/people/1/"
+          onClick={() => {}}
+        />
       </Provider>
     );
 

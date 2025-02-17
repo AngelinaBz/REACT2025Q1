@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import CardList from './CardList';
 import { Provider } from 'react-redux';
 import { store } from '../../redux/store';
-import { Person } from '../../utils/interfaces';
+import { Person } from '../../utils/types';
 
 describe('CardList Component', () => {
   it('renders the correct number of cards', () => {

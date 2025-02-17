@@ -4,9 +4,9 @@ import DetailView from './DetailView';
 import { store } from '../../redux/store';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from '../themeContext/ThemeProvider';
-import { useFetchDetailPersonQuery } from '../../redux/slices/api';
+import { useFetchDetailPersonQuery } from '../../redux/slices/starWarsApi';
 
-vi.mock(import('../../redux/slices/api'), async (importOriginal) => {
+vi.mock(import('../../redux/slices/starWarsApi'), async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...actual,

@@ -1,5 +1,5 @@
 import Loading from '../loading/Loading';
-import { useFetchDetailPersonQuery } from '../../redux/slices/api';
+import { useFetchDetailPersonQuery } from '../../redux/slices/starWarsApi';
 import './DetailView.css';
 import { useTheme } from '../themeContext/UseTheme';
 

@@ -11,8 +11,8 @@ import DetailView from '../../components/detailView/DetailView';
 import {
   useGetAllPeopleQuery,
   useSearchPeopleQuery,
-} from '../../redux/slices/api';
-import { useAppSelector } from '../../redux/store';
+} from '../../redux/slices/starWarsApi';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import Flyout from '../../components/flyout/Flyout';
 import './Main.css';
 
@@ -116,7 +116,10 @@ const MainPage: React.FC = () => {
                 onPageChange={handlePageChange}
                 hasMore={totalCount > page * 10}
               />
-              <CardList people={people} onPersonClick={handlePersonClick} />
+              <CardList
+                people={people || []}
+                onPersonClick={handlePersonClick}
+              />
             </>
           )}
         </div>

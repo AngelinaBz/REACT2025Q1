@@ -8,10 +8,10 @@ import {
   useGetAllPeopleQuery,
   useSearchPeopleQuery,
   useFetchDetailPersonQuery,
-} from '../../redux/slices/api';
+} from '../../redux/slices/starWarsApi';
 import { ThemeProvider } from '../../components/themeContext/ThemeProvider';
 
-vi.mock(import('../../redux/slices/api'), async (importOriginal) => {
+vi.mock(import('../../redux/slices/starWarsApi'), async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...actual,

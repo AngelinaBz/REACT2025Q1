@@ -1,22 +1,21 @@
 import { selectItem, unselectItem } from '../../redux/slices/selectedSlice';
-import { useAppSelector, useAppDispatch } from '../../redux/store';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { SelectedPerson } from '../../utils/types';
 import './Card.css';
 
-interface CardProps {
-  id: string | undefined;
-  name: string;
-  gender: string;
+interface CardProps extends SelectedPerson {
   onClick: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ id, name, gender, onClick }) => {
+const Card: React.FC<CardProps> = ({ id, name, gender, url, onClick }) => {
   const selectedPeople = useAppSelector(
     (state) => state.selected.selectedPeople
   );
   const dispatch = useAppDispatch();
   const isSelected = selectedPeople.some((person) => person.id === id);
   const handleCheckboxChange = () => {
-    const personData = { id: id!, name, gender };
+    const personData = { id: id!, name, gender, url };
     if (isSelected) {
       dispatch(unselectItem(id!));
     } else {

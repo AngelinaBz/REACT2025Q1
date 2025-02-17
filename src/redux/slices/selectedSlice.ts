@@ -1,13 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface Person {
-  id: string;
-  name: string;
-  gender: string;
-}
+import { SelectedPerson } from '../../utils/types';
 
 interface SelectedState {
-  selectedPeople: Person[];
+  selectedPeople: SelectedPerson[];
 }
 
 const initialState: SelectedState = {
@@ -18,7 +13,7 @@ const selectedSlice = createSlice({
   name: 'selected',
   initialState,
   reducers: {
-    selectItem: (state, action: PayloadAction<Person>) => {
+    selectItem: (state, action: PayloadAction<SelectedPerson>) => {
       if (
         !state.selectedPeople.some((person) => person.id === action.payload.id)
       ) {

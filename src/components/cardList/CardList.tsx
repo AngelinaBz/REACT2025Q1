@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from '../card/Card';
-import { Person } from '../../utils/interfaces';
+import { Person } from '../../utils/types';
 import './CardList.css';
 
 interface CardListProps {
@@ -16,6 +16,7 @@ const CardList: React.FC<CardListProps> = ({ people, onPersonClick }) => {
           <Card
             key={index}
             id={people.url.match(/\/(\d+)\//)?.[1]}
+            url={people.url}
             name={people.name}
             gender={people.gender}
             onClick={() => onPersonClick(people.url)}

@@ -1,5 +1,6 @@
 import React from 'react';
-import { useAppSelector, useAppDispatch } from '../../redux/store';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppSelector } from '../../hooks/useAppSelector';
 import { unselectAllItems } from '../../redux/slices/selectedSlice';
 import { useTheme } from '../themeContext/UseTheme';
 import './Flyout.css';
@@ -19,7 +20,10 @@ const Flyout: React.FC = () => {
     const csvContent =
       'data:text/csv;charset=utf-8,' +
       selectedPeople
-        .map((person) => `${person.id},${person.name},${person.gender}`)
+        .map(
+          (person) =>
+            `${person.id},${person.name},${person.gender},${person.url}`
+        )
         .join('\n');
 
     const encodedUri = encodeURI(csvContent);

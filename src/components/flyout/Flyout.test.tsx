@@ -32,10 +32,20 @@ describe('Flyout', () => {
 
   it('renders correctly with selected items', () => {
     store.dispatch(
-      selectItem({ id: '1', name: 'Luke Skywalker', gender: 'male' })
+      selectItem({
+        id: '1',
+        name: 'Luke Skywalker',
+        gender: 'male',
+        url: 'https://swapi.dev/api/people/1/',
+      })
     );
     store.dispatch(
-      selectItem({ id: '2', name: 'Leia Organa', gender: 'female' })
+      selectItem({
+        id: '2',
+        name: 'Leia Organa',
+        gender: 'female',
+        url: 'https://swapi.dev/api/people/2/',
+      })
     );
 
     render(
@@ -57,10 +67,20 @@ describe('Flyout', () => {
 
   it('dispatches unselectAllItems when unselect all button is clicked', () => {
     store.dispatch(
-      selectItem({ id: '1', name: 'Luke Skywalker', gender: 'male' })
+      selectItem({
+        id: '1',
+        name: 'Luke Skywalker',
+        gender: 'male',
+        url: 'https://swapi.dev/api/people/1/',
+      })
     );
     store.dispatch(
-      selectItem({ id: '2', name: 'Leia Organa', gender: 'female' })
+      selectItem({
+        id: '2',
+        name: 'Leia Organa',
+        gender: 'female',
+        url: 'https://swapi.dev/api/people/2/',
+      })
     );
 
     render(
