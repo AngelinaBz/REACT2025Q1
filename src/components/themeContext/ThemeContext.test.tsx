@@ -18,7 +18,7 @@ describe('ThemeContext', () => {
       </ThemeProvider>
     );
 
-    expect(screen.getByRole('button')).toHaveTextContent('Dark theme');
+    expect(screen.getByRole('combobox')).toHaveValue('light');
   });
 
   it('should toggle theme between light and dark', () => {
@@ -28,13 +28,13 @@ describe('ThemeContext', () => {
       </ThemeProvider>
     );
 
-    const button = screen.getByRole('button');
+    const select = screen.getByRole('combobox');
+    expect(select).toHaveValue('light');
+    fireEvent.change(select, { target: { value: 'dark' } });
+    expect(select).toHaveValue('dark');
 
-    expect(button).toHaveTextContent('Dark theme');
-
-    fireEvent.click(button);
-
-    expect(button).toHaveTextContent('Light theme');
+    fireEvent.change(select, { target: { value: 'light' } });
+    expect(select).toHaveValue('light');
   });
 
   it('should use the context', () => {
