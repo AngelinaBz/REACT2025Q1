@@ -161,4 +161,23 @@ describe('MainPage', () => {
 
     console.error = originalErrorFunction;
   });
+
+  it('should close detail view when close button is clicked', async () => {
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <ThemeProvider>
+            <MainPage />
+          </ThemeProvider>
+        </Provider>
+      </BrowserRouter>
+    );
+    fireEvent.click(await screen.findByText('Luke Skywalker'));
+    expect(screen.getAllByText('Luke Skywalker').length).toBe(2);
+
+    fireEvent.click(screen.getByRole('button', { name: /close/i }));
+    await waitFor(() => {
+      expect(screen.getAllByText('Luke Skywalker').length).toBe(1);
+    });
+  });
 });
