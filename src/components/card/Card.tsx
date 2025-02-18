@@ -5,7 +5,7 @@ import { SelectedPerson } from '../../utils/types';
 import './Card.css';
 
 interface CardProps extends SelectedPerson {
-  onClick: () => void;
+  onClick(): void;
 }
 
 const Card = ({ id, name, gender, url, onClick }: CardProps) => {

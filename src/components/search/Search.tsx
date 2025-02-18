@@ -6,8 +6,8 @@ import { useTheme } from '../themeContext/UseTheme';
 import './Search.css';
 
 interface SearchProps {
-  onSearch: (query: string) => void;
-  onError: () => void;
+  onSearch(query: string): void;
+  onError(): void;
 }
 
 const Search = ({ onSearch, onError }: SearchProps) => {
@@ -33,6 +33,7 @@ const Search = ({ onSearch, onError }: SearchProps) => {
         value={query}
         onChange={handleChange}
         placeholder="Search..."
+        aria-label="Search"
       />
       <button className={`button-${theme}`} onClick={handleSearch}>
         Search

@@ -3,7 +3,7 @@ import './Pagination.css';
 
 interface PaginationProps {
   currentPage: number;
-  onPageChange: (page: number) => void;
+  onPageChange(page: number): void;
   hasMore: boolean;
 }
 
@@ -13,32 +13,23 @@ const Pagination = ({
   hasMore,
 }: PaginationProps) => {
   const { theme } = useTheme();
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      onPageChange(currentPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (hasMore) {
-      onPageChange(currentPage + 1);
-    }
-  };
 
   return (
     <div className="pagination">
       <button
         className={`button-${theme}`}
-        onClick={handlePreviousPage}
+        onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
+        aria-label="Previous page"
       >
         Prev
       </button>
       <span>Page {currentPage}</span>
       <button
         className={`button-${theme}`}
-        onClick={handleNextPage}
+        onClick={() => onPageChange(currentPage + 1)}
         disabled={!hasMore}
+        aria-label="Next page"
       >
         Next
       </button>

@@ -11,11 +11,11 @@
   box-sizing: border-box;
 }
 
-.detail-view img {
+.detail-view__image {
   max-width: 200px;
 }
 
-.detail-view h2,
-.detail-view p {
+.detail-view__name,
+.detail-view__information {
   margin: 0;
 }

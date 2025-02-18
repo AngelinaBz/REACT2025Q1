@@ -5,7 +5,7 @@ import './DetailView.css';
 
 interface DetailViewProps {
   personId: string;
-  onClose: () => void;
+  onClose(): void;
 }
 
 const DetailView = ({ personId, onClose }: DetailViewProps) => {
@@ -31,12 +31,15 @@ const DetailView = ({ personId, onClose }: DetailViewProps) => {
   return (
     <div className="detail-view">
       <img
+        className="detail-view__image"
         src={`https://starwars-visualguide.com/assets/img/characters/${personId}.jpg`}
-        alt={detail.name}
+        alt={detail.name || 'Unknown character'}
       ></img>
-      <h2>{detail.name}</h2>
-      <p>Gender: {detail.gender}</p>
-      <p>Birth Year: {detail.birth_year}</p>
+      <h2 className="detail-view__name">{detail.name}</h2>
+      <p className="detail-view__information">Gender: {detail.gender}</p>
+      <p className="detail-view__information">
+        Birth Year: {detail.birth_year}
+      </p>
       <button className={`button-${theme}`} onClick={onClose}>
         Close
       </button>
