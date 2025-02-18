@@ -5,7 +5,7 @@ interface ErrorMessageProps {
   onClose: () => void;
 }
 
-const ErrorMessage: React.FC<ErrorMessageProps> = ({ onClose }) => {
+const ErrorMessage = ({ onClose }: ErrorMessageProps) => {
   const { theme } = useTheme();
 
   return (

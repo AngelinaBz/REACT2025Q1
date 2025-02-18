@@ -1,11 +1,10 @@
-import React from 'react';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { unselectAllItems } from '../../redux/slices/selectedSlice';
 import { useTheme } from '../themeContext/UseTheme';
 import './Flyout.css';
 
-const Flyout: React.FC = () => {
+const Flyout = () => {
   const { theme } = useTheme();
   const dispatch = useAppDispatch();
   const selectedPeople = useAppSelector(

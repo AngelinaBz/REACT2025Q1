@@ -9,7 +9,7 @@ interface SearchProps {
   onError: () => void;
 }
 
-const Search: React.FC<SearchProps> = ({ onSearch, onError }) => {
+const Search = ({ onSearch, onError }: SearchProps) => {
   const { theme } = useTheme();
   const [query, setQuery] = useSearchQuery();
 

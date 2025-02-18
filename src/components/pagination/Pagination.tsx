@@ -1,4 +1,3 @@
-import React from 'react';
 import './Pagination.css';
 import { useTheme } from '../themeContext/UseTheme';
 
@@ -8,11 +7,11 @@ interface PaginationProps {
   hasMore: boolean;
 }
 
-const Pagination: React.FC<PaginationProps> = ({
+const Pagination = ({
   currentPage,
   onPageChange,
   hasMore,
-}) => {
+}: PaginationProps) => {
   const { theme } = useTheme();
   const handlePreviousPage = () => {
     if (currentPage > 1) {

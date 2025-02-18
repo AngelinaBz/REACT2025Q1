@@ -16,7 +16,7 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import Flyout from '../../components/flyout/Flyout';
 import './Main.css';
 
-const MainPage: React.FC = () => {
+const MainPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useSearchQuery();
   const [hasError, setHasError] = useState<boolean>(false);

@@ -8,7 +8,7 @@ interface CardProps extends SelectedPerson {
   onClick: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ id, name, gender, url, onClick }) => {
+const Card = ({ id, name, gender, url, onClick }: CardProps) => {
   const selectedPeople = useAppSelector(
     (state) => state.selected.selectedPeople
   );

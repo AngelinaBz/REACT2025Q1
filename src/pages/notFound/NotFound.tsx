@@ -1,8 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import './NotFound.css';
 
-const NotFoundPage: React.FC = () => {
+const NotFoundPage = () => {
   return (
     <div className="not-found">
       <img src="./gif.gif" alt="gif" />

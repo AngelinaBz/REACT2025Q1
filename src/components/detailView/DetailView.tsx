@@ -8,7 +8,7 @@ interface DetailViewProps {
   onClose: () => void;
 }
 
-const DetailView: React.FC<DetailViewProps> = ({ personId, onClose }) => {
+const DetailView = ({ personId, onClose }: DetailViewProps) => {
   const {
     data: detail,
     error,

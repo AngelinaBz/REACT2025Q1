@@ -1,9 +1,11 @@
-import React, { useState, ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 import { Theme, ThemeContext } from './ThemeContext';
 
-export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+interface ThemeProviderProps {
+  children: ReactNode;
+}
+
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>('light');
 
   return (

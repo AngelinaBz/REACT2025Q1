@@ -1,4 +1,3 @@
-import React from 'react';
 import Card from '../card/Card';
 import { Person } from '../../utils/types';
 import './CardList.css';
@@ -8,7 +7,7 @@ interface CardListProps {
   onPersonClick: (url: string) => void;
 }
 
-const CardList: React.FC<CardListProps> = ({ people, onPersonClick }) => {
+const CardList = ({ people, onPersonClick }: CardListProps) => {
   return (
     <section className="cardlist-container">
       {people.length > 0 ? (
