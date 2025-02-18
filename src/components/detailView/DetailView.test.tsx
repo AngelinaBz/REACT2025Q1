@@ -1,10 +1,12 @@
 import { render, waitFor, screen } from '@testing-library/react';
-import { describe, it, expect, afterEach, vi, Mock } from 'vitest';
-import DetailView from './DetailView';
-import { store } from '../../redux/store';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from '../themeContext/ThemeProvider';
+import { describe, it, expect, afterEach, vi, Mock } from 'vitest';
+
 import { useFetchDetailPersonQuery } from '../../redux/slices/starWarsApi';
+import { store } from '../../redux/store';
+import { ThemeProvider } from '../themeContext/ThemeProvider';
+
+import DetailView from './DetailView';
 
 vi.mock(import('../../redux/slices/starWarsApi'), async (importOriginal) => {
   const actual = await importOriginal();

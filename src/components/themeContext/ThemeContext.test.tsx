@@ -1,8 +1,9 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import ThemeSelector from './ThemeSelector';
+import React from 'react';
 import { vi } from 'vitest';
+
 import { ThemeProvider } from './ThemeProvider';
+import ThemeSelector from './ThemeSelector';
 import { useTheme } from './UseTheme';
 
 const TestComponent: React.FC = () => {

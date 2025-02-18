@@ -4,11 +4,12 @@ import {
   BrowserRouter as Router,
   Routes,
 } from 'react-router-dom';
-import './App.css';
+
+import { useTheme } from './components/themeContext/UseTheme';
 import MainPage from './pages/main/Main';
 import NotFoundPage from './pages/notFound/NotFound';
-import { useTheme } from './components/themeContext/UseTheme';
 import { ROUTES } from './routes/routes';
+import './App.css';
 
 const App = () => {
   const { theme } = useTheme();

@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+
 import CardList from '../../components/cardList/CardList';
+import DetailView from '../../components/detailView/DetailView';
 import ErrorBoundary from '../../components/errorBoundary/ErrorBoundary';
 import ErrorMessage from '../../components/errorBoundary/ErrorMessage';
-import Search from '../../components/search/Search';
-import { useSearchQuery } from '../../hooks/useSearchQuery';
-import Pagination from '../../components/pagination/Pagination';
+import Flyout from '../../components/flyout/Flyout';
 import Loading from '../../components/loading/Loading';
-import { useSearchParams } from 'react-router-dom';
-import DetailView from '../../components/detailView/DetailView';
+import Pagination from '../../components/pagination/Pagination';
+import Search from '../../components/search/Search';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { useSearchQuery } from '../../hooks/useSearchQuery';
 import {
   useGetAllPeopleQuery,
   useSearchPeopleQuery,
 } from '../../redux/slices/starWarsApi';
-import { useAppSelector } from '../../hooks/useAppSelector';
-import Flyout from '../../components/flyout/Flyout';
 import './Main.css';
 
 const MainPage = () => {

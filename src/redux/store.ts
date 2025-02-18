@@ -1,7 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { starWarsApi } from './slices/starWarsApi';
+
 import selectedReducer from './slices/selectedSlice';
+import { starWarsApi } from './slices/starWarsApi';
 
 export const store = configureStore({
   reducer: {

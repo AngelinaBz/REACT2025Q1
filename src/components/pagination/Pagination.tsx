@@ -1,5 +1,5 @@
-import './Pagination.css';
 import { useTheme } from '../themeContext/UseTheme';
+import './Pagination.css';
 
 interface PaginationProps {
   currentPage: number;

@@ -1,5 +1,5 @@
-import './ErrorMessage.css';
 import { useTheme } from '../themeContext/UseTheme';
+import './ErrorMessage.css';
 
 interface ErrorMessageProps {
   onClose: () => void;

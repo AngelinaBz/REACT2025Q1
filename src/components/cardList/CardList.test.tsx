@@ -1,9 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
-import CardList from './CardList';
 import { Provider } from 'react-redux';
+import { describe, it, expect, vi } from 'vitest';
+
 import { store } from '../../redux/store';
 import { Person } from '../../utils/types';
+
+import CardList from './CardList';
 
 describe('CardList Component', () => {
   it('renders the correct number of cards', () => {

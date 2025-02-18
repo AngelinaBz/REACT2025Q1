@@ -1,7 +1,9 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 import { vi } from 'vitest';
-import Search from './Search';
+
 import { ThemeProvider } from '../themeContext/ThemeProvider';
+
+import Search from './Search';
 
 const mockLocalStorage = (() => {
   let store: { [key: string]: string } = {};

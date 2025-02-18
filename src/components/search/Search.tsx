@@ -1,8 +1,9 @@
 import React from 'react';
-import './Search.css';
+
 import { useSearchQuery } from '../../hooks/useSearchQuery';
-import { useTheme } from '../themeContext/UseTheme';
 import ThemeSelector from '../themeContext/ThemeSelector';
+import { useTheme } from '../themeContext/UseTheme';
+import './Search.css';
 
 interface SearchProps {
   onSearch: (query: string) => void;

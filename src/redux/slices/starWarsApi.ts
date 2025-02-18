@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 import { DetailPersonResponse, PeopleResponse } from '../../utils/types';
 
 export const starWarsApi = createApi({

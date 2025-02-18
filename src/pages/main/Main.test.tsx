@@ -1,15 +1,17 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { vi, Mock } from 'vitest';
-import MainPage from './Main';
-import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from '../../redux/store';
+import { BrowserRouter } from 'react-router-dom';
+import { vi, Mock } from 'vitest';
+
+import { ThemeProvider } from '../../components/themeContext/ThemeProvider';
 import {
   useGetAllPeopleQuery,
   useSearchPeopleQuery,
   useFetchDetailPersonQuery,
 } from '../../redux/slices/starWarsApi';
-import { ThemeProvider } from '../../components/themeContext/ThemeProvider';
+import { store } from '../../redux/store';
+
+import MainPage from './Main';
 
 vi.mock(import('../../redux/slices/starWarsApi'), async (importOriginal) => {
   const actual = await importOriginal();
