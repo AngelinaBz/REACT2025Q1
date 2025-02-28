@@ -1,9 +1,10 @@
 import { Component, ReactNode, ErrorInfo } from 'react';
+
 import ErrorMessage from './ErrorMessage';
 
 interface Props {
   children: ReactNode;
-  onError: () => void;
+  onError(): void;
 }
 
 interface ErrorBoundaryState {

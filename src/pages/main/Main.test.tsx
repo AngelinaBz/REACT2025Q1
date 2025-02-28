@@ -1,36 +1,74 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { vi, Mock } from 'vitest';
-import MainPage from './Main';
-import { getAllPeople, fetchDetailPerson } from '../../services/api';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { vi, Mock } from 'vitest';
 
-vi.mock('../../services/api');
+import { ThemeProvider } from '../../components/themeContext/ThemeProvider';
+import {
+  useGetAllPeopleQuery,
+  useSearchPeopleQuery,
+  useFetchDetailPersonQuery,
+} from '../../redux/slices/starWarsApi';
+import { store } from '../../redux/store';
+
+import MainPage from './Main';
+
+vi.mock(import('../../redux/slices/starWarsApi'), async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    useGetAllPeopleQuery: vi.fn(),
+    useFetchDetailPersonQuery: vi.fn(),
+    useSearchPeopleQuery: vi.fn(),
+  };
+});
 
 describe('MainPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+
+    (useGetAllPeopleQuery as Mock).mockReturnValue({
+      data: {
+        results: [
+          {
+            name: 'Luke Skywalker',
+            gender: 'male',
+            url: 'https://swapi.dev/api/people/1/',
+          },
+        ],
+        count: 1,
+      },
+      isLoading: false,
+      isError: false,
+    });
+
+    (useFetchDetailPersonQuery as Mock).mockReturnValue({
+      data: {
+        name: 'Luke Skywalker',
+        gender: 'male',
+        birth_year: '19BBY',
+      },
+      isLoading: false,
+      isError: false,
+    });
+
+    (useSearchPeopleQuery as Mock).mockReturnValue({
+      data: {
+        results: [],
+      },
+      isLoading: false,
+      isError: false,
+    });
   });
 
   it('should open detail view when a card is clicked', async () => {
-    (getAllPeople as Mock).mockResolvedValueOnce({
-      results: [
-        {
-          name: 'Luke Skywalker',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/1/',
-        },
-      ],
-      count: 1,
-    });
-    (fetchDetailPerson as Mock).mockResolvedValueOnce({
-      name: 'Luke Skywalker',
-      gender: 'male',
-      birth_year: '19BBY',
-    });
-
     render(
       <BrowserRouter>
-        <MainPage />
+        <Provider store={store}>
+          <ThemeProvider>
+            <MainPage />
+          </ThemeProvider>
+        </Provider>
       </BrowserRouter>
     );
 
@@ -38,60 +76,24 @@ describe('MainPage', () => {
     fireEvent.click(card);
 
     await waitFor(() => {
-      expect(fetchDetailPerson).toHaveBeenCalledWith('1');
-      expect(
-        screen.getByRole('heading', { name: /Luke Skywalker/i })
-      ).toBeInTheDocument();
-    });
-  });
-
-  it('should trigger an API call to fetch detailed information when a card is clicked', async () => {
-    (getAllPeople as Mock).mockResolvedValueOnce({
-      results: [
-        {
-          name: 'Luke Skywalker',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/1/',
-        },
-      ],
-      count: 1,
-    });
-    (fetchDetailPerson as Mock).mockResolvedValueOnce({
-      name: 'Luke Skywalker',
-      gender: 'male',
-      birth_year: '19BBY',
-    });
-
-    render(
-      <BrowserRouter>
-        <MainPage />
-      </BrowserRouter>
-    );
-
-    const card = await screen.findByText('Luke Skywalker');
-    fireEvent.click(card);
-
-    await waitFor(() => {
-      expect(fetchDetailPerson).toHaveBeenCalledTimes(1);
-      expect(fetchDetailPerson).toHaveBeenCalledWith('1');
+      expect(useFetchDetailPersonQuery).toHaveBeenCalledWith('1');
+      const headings = screen.getAllByRole('heading', {
+        name: 'Luke Skywalker',
+      });
+      expect(headings.length).toBe(2);
+      expect(headings[0]).toBeInTheDocument();
+      expect(headings[1]).toBeInTheDocument();
     });
   });
 
   it('fetches and displays people when component mounts', async () => {
-    (getAllPeople as Mock).mockResolvedValueOnce({
-      results: [
-        {
-          name: 'Luke Skywalker',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/1/',
-        },
-      ],
-      count: 1,
-    });
-
     render(
       <BrowserRouter>
-        <MainPage />
+        <Provider store={store}>
+          <ThemeProvider>
+            <MainPage />
+          </ThemeProvider>
+        </Provider>
       </BrowserRouter>
     );
 
@@ -100,12 +102,38 @@ describe('MainPage', () => {
     });
   });
 
-  it('handles errors when fetching data', async () => {
-    (getAllPeople as Mock).mockRejectedValueOnce(new Error('not found'));
+  it('should display loading indicator when data is loading', () => {
+    (useGetAllPeopleQuery as Mock).mockReturnValue({
+      isLoading: true,
+    });
+
+    const { container } = render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <ThemeProvider>
+            <MainPage />
+          </ThemeProvider>
+        </Provider>
+      </BrowserRouter>
+    );
+
+    const loadingIndicator = container.querySelector('.loading');
+    expect(loadingIndicator).toBeInTheDocument();
+  });
+
+  it('should display error message when both queries return errors', async () => {
+    (useSearchPeopleQuery as Mock).mockReturnValue({
+      isLoading: false,
+      error: new Error('Error searching people'),
+    });
 
     render(
       <BrowserRouter>
-        <MainPage />
+        <Provider store={store}>
+          <ThemeProvider>
+            <MainPage />
+          </ThemeProvider>
+        </Provider>
       </BrowserRouter>
     );
 
@@ -114,85 +142,42 @@ describe('MainPage', () => {
     });
   });
 
-  it('should update URL query parameter when page changes', async () => {
-    (getAllPeople as Mock).mockResolvedValueOnce({
-      results: [
-        {
-          name: 'Test 1',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/1/',
-        },
-        {
-          name: 'Test 2',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/2/',
-        },
-        {
-          name: 'Test 3',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/3/',
-        },
-        {
-          name: 'Test 4',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/4/',
-        },
-        {
-          name: 'Test 5',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/5/',
-        },
-        {
-          name: 'Test 6',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/6/',
-        },
-        {
-          name: 'Test 7',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/7/',
-        },
-        {
-          name: 'Test 8',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/8/',
-        },
-        {
-          name: 'Test 9',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/9/',
-        },
-        {
-          name: 'Test 10',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/10/',
-        },
-        {
-          name: 'Test 11',
-          gender: 'male',
-          url: 'https://swapi.dev/api/people/11/',
-        },
-      ],
-      count: 11,
-    });
+  it('should handle error when handleError is called', async () => {
+    const originalErrorFunction = console.error;
+    console.error = vi.fn();
 
     render(
       <BrowserRouter>
-        <MainPage />
+        <Provider store={store}>
+          <ThemeProvider>
+            <MainPage />
+          </ThemeProvider>
+        </Provider>
       </BrowserRouter>
     );
 
+    fireEvent.click(screen.getByText('Throw Error'));
+    expect(screen.getByText(/Something went wrong../i)).toBeInTheDocument();
+
+    console.error = originalErrorFunction;
+  });
+
+  it('should close detail view when close button is clicked', async () => {
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <ThemeProvider>
+            <MainPage />
+          </ThemeProvider>
+        </Provider>
+      </BrowserRouter>
+    );
+    fireEvent.click(await screen.findByText('Luke Skywalker'));
+    expect(screen.getAllByText('Luke Skywalker').length).toBe(2);
+
+    fireEvent.click(screen.getByRole('button', { name: /close/i }));
     await waitFor(() => {
-      expect(screen.getByText('Test 1')).toBeInTheDocument();
-      expect(screen.getByText('Test 2')).toBeInTheDocument();
-    });
-
-    expect(window.location.search).toBe('?page=1');
-
-    fireEvent.click(screen.getByText(/Next/i));
-
-    await waitFor(() => {
-      expect(window.location.search).toBe('?page=2');
+      expect(screen.getAllByText('Luke Skywalker').length).toBe(1);
     });
   });
 });

@@ -1,5 +1,16 @@
-#root {
-  max-width: 1280px;
+.app {
   margin: 0 auto;
   padding: 2rem;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.dark {
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
+
+.light {
+  color: #213547;
+  background-color: #ffffff;
 }

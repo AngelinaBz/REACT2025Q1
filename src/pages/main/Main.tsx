@@ -1,28 +1,55 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+
 import CardList from '../../components/cardList/CardList';
+import DetailView from '../../components/detailView/DetailView';
 import ErrorBoundary from '../../components/errorBoundary/ErrorBoundary';
 import ErrorMessage from '../../components/errorBoundary/ErrorMessage';
-import Search from '../../components/search/Search';
-import { useSearchQuery } from '../../hooks/useSearchQuery';
-import Pagination from '../../components/pagination/Pagination';
-import { getAllPeople, searchPeople } from '../../services/api';
+import Flyout from '../../components/flyout/Flyout';
 import Loading from '../../components/loading/Loading';
-import { Person } from '../../utils/interfaces';
-import { useSearchParams } from 'react-router-dom';
-import DetailView from '../../components/detailView/DetailView';
+import Pagination from '../../components/pagination/Pagination';
+import Search from '../../components/search/Search';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { useSearchQuery } from '../../hooks/useSearchQuery';
+import {
+  useGetAllPeopleQuery,
+  useSearchPeopleQuery,
+} from '../../redux/slices/starWarsApi';
 import './Main.css';
 
-const MainPage: React.FC = () => {
+const MainPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useSearchQuery();
   const [hasError, setHasError] = useState<boolean>(false);
   const [page, setPage] = useState<number>(
     parseInt(searchParams.get('page') || '1', 10)
   );
-  const [totalCount, setTotalCount] = useState<number>(0);
-  const [people, setPeople] = useState<Person[]>([]);
-  const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [detailedPerson, setDetailedPerson] = useState<string | null>(null);
+  const selectedPeople = useAppSelector(
+    (state) => state.selected.selectedPeople
+  );
+  const {
+    data: allPeopleData,
+    isLoading: isLoadingAll,
+    error: errorAll,
+  } = useGetAllPeopleQuery(page);
+  const {
+    data: searchPeopleData,
+    isLoading: isLoadingSearch,
+    error: errorSearch,
+  } = useSearchPeopleQuery({ query, page }, { skip: !query });
+
+  useEffect(() => {
+    if (errorAll || errorSearch) {
+      setHasError(true);
+    }
+  }, [errorAll, errorSearch]);
+
+  const people = query ? searchPeopleData?.results : allPeopleData?.results;
+  const totalCount = query
+    ? searchPeopleData?.count || 0
+    : allPeopleData?.count || 0;
+  const isLoading = isLoadingAll || isLoadingSearch;
 
   const handleSearch = (query: string) => {
     setQuery(query);
@@ -47,34 +74,10 @@ const MainPage: React.FC = () => {
     setPage(newPage);
   };
 
-  const loadPeople = async (query: string, page: number) => {
-    setIsLoading(true);
-    let data;
-    try {
-      if (query) {
-        data = await searchPeople(query, page);
-      } else {
-        data = await getAllPeople(page);
-      }
-      setPeople(data.results);
-      setTotalCount(data.count);
-      setHasError(false);
-    } catch (error) {
-      console.error('Error loading people:', error);
-      setHasError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadPeople(query, page);
-  }, [query, page]);
-
   const handlePersonClick = (url: string) => {
     const id = url.match(/\/(\d+)\//)?.[1];
     if (id) {
-      setSelectedPerson(id);
+      setDetailedPerson(id);
     }
   };
 
@@ -85,16 +88,16 @@ const MainPage: React.FC = () => {
     }
   };
 
-  const closeDetailView = () => setSelectedPerson(null);
+  const closeDetailView = () => setDetailedPerson(null);
 
   useEffect(() => {
     const params = {
       ...(page !== undefined && { page: String(page) }),
-      ...(selectedPerson && { details: selectedPerson }),
+      ...(detailedPerson && { details: detailedPerson }),
     };
 
     setSearchParams(params);
-  }, [page, selectedPerson, setSearchParams]);
+  }, [page, detailedPerson, setSearchParams]);
 
   if (hasError) {
     return <ErrorMessage onClose={closeErrorMessage} />;
@@ -114,16 +117,20 @@ const MainPage: React.FC = () => {
                 onPageChange={handlePageChange}
                 hasMore={totalCount > page * 10}
               />
-              <CardList people={people} onPersonClick={handlePersonClick} />
+              <CardList
+                people={people || []}
+                onPersonClick={handlePersonClick}
+              />
             </>
           )}
         </div>
         <div className="detailed-container">
-          {selectedPerson ? (
-            <DetailView personId={selectedPerson} onClose={closeDetailView} />
+          {detailedPerson ? (
+            <DetailView personId={detailedPerson} onClose={closeDetailView} />
           ) : null}
         </div>
       </div>
+      {selectedPeople.length > 0 && <Flyout />}
     </ErrorBoundary>
   );
 };

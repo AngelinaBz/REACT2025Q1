@@ -1,13 +1,17 @@
 import React from 'react';
-import './Search.css';
+
 import { useSearchQuery } from '../../hooks/useSearchQuery';
+import ThemeSelector from '../themeContext/ThemeSelector';
+import { useTheme } from '../themeContext/UseTheme';
+import './Search.css';
 
 interface SearchProps {
-  onSearch: (query: string) => void;
-  onError: () => void;
+  onSearch(query: string): void;
+  onError(): void;
 }
 
-const Search: React.FC<SearchProps> = ({ onSearch, onError }) => {
+const Search = ({ onSearch, onError }: SearchProps) => {
+  const { theme } = useTheme();
   const [query, setQuery] = useSearchQuery();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,9 +33,15 @@ const Search: React.FC<SearchProps> = ({ onSearch, onError }) => {
         value={query}
         onChange={handleChange}
         placeholder="Search..."
+        aria-label="Search"
       />
-      <button onClick={handleSearch}>Search</button>
-      <button onClick={handleError}>Throw Error</button>
+      <button className={`button-${theme}`} onClick={handleSearch}>
+        Search
+      </button>
+      <button className={`button-${theme}`} onClick={handleError}>
+        Throw Error
+      </button>
+      <ThemeSelector />
     </section>
   );
 };

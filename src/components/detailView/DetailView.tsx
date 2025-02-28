@@ -1,36 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useFetchDetailPersonQuery } from '../../redux/slices/starWarsApi';
 import Loading from '../loading/Loading';
-import { fetchDetailPerson } from '../../services/api';
-import { Person } from '../../utils/interfaces';
+import { useTheme } from '../themeContext/UseTheme';
 import './DetailView.css';
 
 interface DetailViewProps {
   personId: string;
-  onClose: () => void;
+  onClose(): void;
 }
 
-const DetailView: React.FC<DetailViewProps> = ({ personId, onClose }) => {
-  const [detail, setDetail] = useState<Person | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchDetail = async () => {
-      setIsLoading(true);
-      try {
-        const data = await fetchDetailPerson(personId);
-        console.log(data);
-        setDetail(data);
-      } catch (error) {
-        console.error('Error fetching detail:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchDetail();
-  }, [personId]);
+const DetailView = ({ personId, onClose }: DetailViewProps) => {
+  const {
+    data: detail,
+    error,
+    isLoading,
+  } = useFetchDetailPersonQuery(personId);
+  const { theme } = useTheme();
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (error) {
+    console.error('Error fetching detail:', error);
   }
 
   if (!detail) {
@@ -40,13 +31,18 @@ const DetailView: React.FC<DetailViewProps> = ({ personId, onClose }) => {
   return (
     <div className="detail-view">
       <img
+        className="detail-view__image"
         src={`https://starwars-visualguide.com/assets/img/characters/${personId}.jpg`}
-        alt={detail.name}
+        alt={detail.name || 'Unknown character'}
       ></img>
-      <h2>{detail.name}</h2>
-      <p>Gender: {detail.gender}</p>
-      <p>Birth Year: {detail.birth_year}</p>
-      <button onClick={onClose}>Close</button>
+      <h2 className="detail-view__name">{detail.name}</h2>
+      <p className="detail-view__information">Gender: {detail.gender}</p>
+      <p className="detail-view__information">
+        Birth Year: {detail.birth_year}
+      </p>
+      <button className={`button-${theme}`} onClick={onClose}>
+        Close
+      </button>
     </div>
   );
 };

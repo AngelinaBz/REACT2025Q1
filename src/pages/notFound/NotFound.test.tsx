@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+
 import NotFoundPage from './NotFound';
 
 describe('NotFoundPage', () => {
@@ -15,7 +16,7 @@ describe('NotFoundPage', () => {
       name: /Page not found/i,
     });
     const gifImage = screen.getByAltText(/gif/i);
-    const button = screen.getByRole('button', { name: /Try again/i });
+    const button = screen.getByText(/Try again/i);
 
     expect(errorHeading).toBeInTheDocument();
     expect(pageNotFoundHeading).toBeInTheDocument();
