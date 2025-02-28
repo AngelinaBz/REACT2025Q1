@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { unselectAllItems } from '../../redux/slices/selectedSlice';
@@ -10,12 +12,15 @@ const Flyout = () => {
   const selectedPeople = useAppSelector(
     (state) => state.selected.selectedPeople
   );
+  const downloadLinkRef = useRef<HTMLAnchorElement>(null);
 
   const handleUnselectAll = () => {
     dispatch(unselectAllItems());
   };
 
   const downloadCSV = () => {
+    if (downloadLinkRef.current === null) return;
+    const link = downloadLinkRef.current;
     const csvContent =
       'data:text/csv;charset=utf-8,' +
       selectedPeople
@@ -26,16 +31,15 @@ const Flyout = () => {
         .join('\n');
 
     const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
     link.setAttribute(
       'download',
       `${selectedPeople.length}_starwarspeople.csv`
     );
-    document.body.appendChild(link);
 
     link.click();
-    document.body.removeChild(link);
+    link.removeAttribute('href');
+    link.removeAttribute('download');
   };
 
   return (
@@ -49,6 +53,7 @@ const Flyout = () => {
           <button className={`button-${theme}`} onClick={downloadCSV}>
             Download
           </button>
+          <a ref={downloadLinkRef} href="#" />
         </div>
       )}
     </div>
