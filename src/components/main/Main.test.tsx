@@ -3,13 +3,13 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { vi, Mock } from 'vitest';
 
-import { ThemeProvider } from '../../components/themeContext/ThemeProvider';
 import {
   useGetAllPeopleQuery,
   useSearchPeopleQuery,
   useFetchDetailPersonQuery,
 } from '../../redux/slices/starWarsApi';
 import { store } from '../../redux/store';
+import { ThemeProvider } from '../themeContext/ThemeProvider';
 
 import MainPage from './Main';
 

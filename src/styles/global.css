@@ -1,3 +1,13 @@
+@import '@components/main/Main.module.css';
+@import '@components/card/Card.module.css';
+@import '@components/cardList/CardList.module.css';
+@import '@components/detailView/DetailView.module.css';
+@import '@components/flyout/Flyout.module.css';
+@import '@components/search/Search.module.css';
+@import '@components/pagination/Pagination.module.css';
+@import '@components/loading/Loading.module.css';
+@import '@components/errorBoundary/ErrorMessage.module.css';
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -85,4 +95,21 @@ select {
 
 select:hover {
   border-color: #646cff;
+}
+
+.app {
+  margin: 0 auto;
+  padding: 2rem;
+  height: 100%;
+  min-height: 100vh;
+}
+
+.dark {
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
+
+.light {
+  color: #213547;
+  background-color: #ffffff;
 }

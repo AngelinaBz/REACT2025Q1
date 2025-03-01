@@ -4,7 +4,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { unselectAllItems } from '../../redux/slices/selectedSlice';
 import { useTheme } from '../themeContext/UseTheme';
-import './Flyout.css';
+import './Flyout.module.css';
 
 const Flyout = () => {
   const { theme } = useTheme();

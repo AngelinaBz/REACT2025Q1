@@ -1,7 +1,7 @@
 import { useFetchDetailPersonQuery } from '../../redux/slices/starWarsApi';
 import Loading from '../loading/Loading';
 import { useTheme } from '../themeContext/UseTheme';
-import './DetailView.css';
+import './DetailView.module.css';
 
 interface DetailViewProps {
   personId: string;

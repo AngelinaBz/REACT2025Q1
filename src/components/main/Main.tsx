@@ -1,25 +1,30 @@
+import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
-import CardList from '../../components/cardList/CardList';
-import DetailView from '../../components/detailView/DetailView';
-import ErrorBoundary from '../../components/errorBoundary/ErrorBoundary';
-import ErrorMessage from '../../components/errorBoundary/ErrorMessage';
-import Flyout from '../../components/flyout/Flyout';
-import Loading from '../../components/loading/Loading';
-import Pagination from '../../components/pagination/Pagination';
-import Search from '../../components/search/Search';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useSearchQuery } from '../../hooks/useSearchQuery';
 import {
   useGetAllPeopleQuery,
   useSearchPeopleQuery,
 } from '../../redux/slices/starWarsApi';
-import './Main.css';
+import CardList from '../cardList/CardList';
+import DetailView from '../detailView/DetailView';
+import ErrorBoundary from '../errorBoundary/ErrorBoundary';
+import ErrorMessage from '../errorBoundary/ErrorMessage';
+import Flyout from '../flyout/Flyout';
+import Loading from '../loading/Loading';
+import Pagination from '../pagination/Pagination';
+import Search from '../search/Search';
+
+import './Main.module.css';
+import { useRouter } from 'next/router';
+import { useTheme } from '@components/themeContext/UseTheme';
 
 const MainPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [query, setQuery] = useSearchQuery();
+  const { theme } = useTheme();
   const [hasError, setHasError] = useState<boolean>(false);
   const [page, setPage] = useState<number>(
     parseInt(searchParams.get('page') || '1', 10)
@@ -91,13 +96,21 @@ const MainPage = () => {
   const closeDetailView = () => setDetailedPerson(null);
 
   useEffect(() => {
-    const params = {
-      ...(page !== undefined && { page: String(page) }),
-      ...(detailedPerson && { details: detailedPerson }),
-    };
+    const params = new URLSearchParams();
 
-    setSearchParams(params);
-  }, [page, detailedPerson, setSearchParams]);
+    if (page !== undefined) {
+      params.set('page', String(page));
+    }
+
+    if (detailedPerson) {
+      params.set('details', detailedPerson);
+    }
+
+    router.replace({
+      pathname: router.pathname,
+      query: Object.fromEntries(params),
+    });
+  }, [page, detailedPerson]);
 
   if (hasError) {
     return <ErrorMessage onClose={closeErrorMessage} />;
@@ -105,32 +118,34 @@ const MainPage = () => {
 
   return (
     <ErrorBoundary onError={handleError}>
-      <Search onSearch={handleSearch} onError={handleError} />
-      <div className="main-container">
-        <div className="results-container" onClick={handleContainerClick}>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <>
-              <Pagination
-                currentPage={page}
-                onPageChange={handlePageChange}
-                hasMore={totalCount > page * 10}
-              />
-              <CardList
-                people={people || []}
-                onPersonClick={handlePersonClick}
-              />
-            </>
-          )}
+      <div className={`app ${theme}`}>
+        <Search onSearch={handleSearch} onError={handleError} />
+        <div className="main-container">
+          <div className="results-container" onClick={handleContainerClick}>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <>
+                <Pagination
+                  currentPage={page}
+                  onPageChange={handlePageChange}
+                  hasMore={totalCount > page * 10}
+                />
+                <CardList
+                  people={people || []}
+                  onPersonClick={handlePersonClick}
+                />
+              </>
+            )}
+          </div>
+          <div className="detailed-container">
+            {detailedPerson ? (
+              <DetailView personId={detailedPerson} onClose={closeDetailView} />
+            ) : null}
+          </div>
         </div>
-        <div className="detailed-container">
-          {detailedPerson ? (
-            <DetailView personId={detailedPerson} onClose={closeDetailView} />
-          ) : null}
-        </div>
+        {selectedPeople.length > 0 && <Flyout />}
       </div>
-      {selectedPeople.length > 0 && <Flyout />}
     </ErrorBoundary>
   );
 };
