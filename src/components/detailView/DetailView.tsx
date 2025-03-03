@@ -1,9 +1,10 @@
-import Loading from '@components/loading/Loading';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { useAppSelector } from 'src/hooks/useAppSelector';
 
 import { useTheme } from '../themeContext/UseTheme';
+
+import Loading from '@/components/loading/Loading';
+import { useAppSelector } from '@/hooks/useAppSelector';
 import './DetailView.module.css';
 
 interface DetailViewProps {

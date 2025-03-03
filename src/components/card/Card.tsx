@@ -1,7 +1,7 @@
-import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { useAppSelector } from '../../hooks/useAppSelector';
-import { selectItem, unselectItem } from '../../redux/slices/selectedSlice';
-import { SelectedPerson } from '../../utils/types';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { selectItem, unselectItem } from '@/redux/slices/selectedSlice';
+import { SelectedPerson } from '@/utils/types';
 import './Card.module.css';
 
 interface CardProps extends SelectedPerson {

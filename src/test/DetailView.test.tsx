@@ -1,13 +1,12 @@
-import { setDetails } from '@redux/slices/detailsSlice';
 import { render, waitFor, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { mockDetailsResponse } from 'src/test/mock';
 import { describe, it, expect, afterEach, vi } from 'vitest';
 
-import { store } from '../../redux/store';
-import { ThemeProvider } from '../themeContext/ThemeProvider';
-
-import DetailView from './DetailView';
+import DetailView from '@/components/detailView/DetailView';
+import { ThemeProvider } from '@/components/themeContext/ThemeProvider';
+import { setDetails } from '@/redux/slices/detailsSlice';
+import { store } from '@/redux/store';
 
 const mockRouter = {
   push: vi.fn(),

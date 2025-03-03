@@ -1,6 +1,7 @@
-import NotFoundPage from '@pages/404';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+
+import NotFoundPage from '@/pages/404';
 
 describe('NotFoundPage', () => {
   it('renders NotFoundPage with correct elements', () => {

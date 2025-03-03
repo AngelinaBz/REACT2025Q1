@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { useSearchQuery } from '../../hooks/useSearchQuery';
 import ThemeSelector from '../themeContext/ThemeSelector';
 import { useTheme } from '../themeContext/UseTheme';
+
+import { useSearchQuery } from '@/hooks/useSearchQuery';
 import './Search.module.css';
 
 interface SearchProps {

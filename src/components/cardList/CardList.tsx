@@ -1,5 +1,6 @@
-import { Person } from '../../utils/types';
 import Card from '../card/Card';
+
+import { Person } from '@/utils/types';
 import './CardList.module.css';
 
 interface CardListProps {

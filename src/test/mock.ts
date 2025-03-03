@@ -1,4 +1,4 @@
-import { DetailPersonResponse, PeopleResponse } from 'src/utils/types';
+import { DetailPersonResponse, PeopleResponse } from '@/utils/types';
 
 export const mockPeopleResponse: PeopleResponse = {
   results: [

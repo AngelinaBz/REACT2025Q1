@@ -1,9 +1,8 @@
 import { render, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 
-import { ThemeProvider } from '../themeContext/ThemeProvider';
-
-import Pagination from './Pagination';
+import Pagination from '@/components/pagination/Pagination';
+import { ThemeProvider } from '@/components/themeContext/ThemeProvider';
 
 describe('Pagination Component', () => {
   let onPageChangeMock: (page: number) => void;

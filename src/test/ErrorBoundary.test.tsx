@@ -1,9 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 
-import { ThemeProvider } from '../themeContext/ThemeProvider';
-
-import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary from '@/components/errorBoundary/ErrorBoundary';
+import { ThemeProvider } from '@/components/themeContext/ThemeProvider';
 
 const FailingComponent = () => {
   throw new Error('Test error');

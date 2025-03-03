@@ -1,9 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 
-import { ThemeProvider } from '../themeContext/ThemeProvider';
-
-import ErrorMessage from './ErrorMessage';
+import ErrorMessage from '@/components/errorBoundary/ErrorMessage';
+import { ThemeProvider } from '@/components/themeContext/ThemeProvider';
 
 describe('ErrorMessage Component', () => {
   const mockOnClose = vi.fn();

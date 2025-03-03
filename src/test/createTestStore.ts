@@ -1,9 +1,10 @@
-import detailsReducer from '@redux/slices/detailsSlice';
-import peopleReducer from '@redux/slices/peopleSlice';
-import selectedReducer from '@redux/slices/selectedSlice';
-import { RootState } from '@redux/store';
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
+
+import detailsReducer from '@/redux/slices/detailsSlice';
+import peopleReducer from '@/redux/slices/peopleSlice';
+import selectedReducer from '@/redux/slices/selectedSlice';
+import { RootState } from '@/redux/store';
 
 export const createTestStore = (preloadedState?: Partial<RootState>) => {
   const rootReducer = combineReducers({

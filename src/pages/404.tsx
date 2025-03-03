@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import '@styles/404.module.css';
+import '@/styles/404.module.css';
 
 const NotFoundPage = () => {
   return (

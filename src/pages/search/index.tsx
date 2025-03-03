@@ -1,23 +1,24 @@
-import ErrorMessage from '@components//errorBoundary/ErrorMessage';
-import CardList from '@components/cardList/CardList';
-import DetailView from '@components/detailView/DetailView';
-import ErrorBoundary from '@components/errorBoundary/ErrorBoundary';
-import Flyout from '@components/flyout/Flyout';
-import Loading from '@components/loading/Loading';
-import Pagination from '@components/pagination/Pagination';
-import Search from '@components/search/Search';
-import { useTheme } from '@components/themeContext/UseTheme';
-import { setDetails } from '@redux/slices/detailsSlice';
-import { setPeople } from '@redux/slices/peopleSlice';
-import { wrapper } from '@redux/store';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch } from 'src/hooks/useAppDispatch';
-import { useAppSelector } from 'src/hooks/useAppSelector';
-import { useSearchQuery } from 'src/hooks/useSearchQuery';
-import { DetailPersonResponse, PeopleResponse } from 'src/utils/types';
-import '@styles/Main.module.css';
+
+import ErrorMessage from '@/components//errorBoundary/ErrorMessage';
+import CardList from '@/components/cardList/CardList';
+import DetailView from '@/components/detailView/DetailView';
+import ErrorBoundary from '@/components/errorBoundary/ErrorBoundary';
+import Flyout from '@/components/flyout/Flyout';
+import Loading from '@/components/loading/Loading';
+import Pagination from '@/components/pagination/Pagination';
+import Search from '@/components/search/Search';
+import { useTheme } from '@/components/themeContext/UseTheme';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { useSearchQuery } from '@/hooks/useSearchQuery';
+import { setDetails } from '@/redux/slices/detailsSlice';
+import { setPeople } from '@/redux/slices/peopleSlice';
+import { wrapper } from '@/redux/store';
+import { DetailPersonResponse, PeopleResponse } from '@/utils/types';
+import '@/styles/Main.module.css';
 
 interface MainProps {
   data: PeopleResponse;

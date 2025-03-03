@@ -1,11 +1,12 @@
-import { ThemeProvider } from '@components/themeContext/ThemeProvider';
-import Main from '@pages/search';
-import { store } from '@redux/store';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { vi } from 'vitest';
 
 import { mockDetailsResponse, mockPeopleResponse } from './mock';
+
+import { ThemeProvider } from '@/components/themeContext/ThemeProvider';
+import Main from '@/pages/search';
+import { store } from '@/redux/store';
 
 const mockRouter = {
   push: vi.fn(),
