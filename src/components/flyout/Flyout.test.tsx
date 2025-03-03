@@ -1,10 +1,9 @@
-import { RootState } from '@redux/store';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { createTestStore } from 'src/test/createTestStore';
 import { describe, it, expect, vi } from 'vitest';
 
 import { selectItem, unselectAllItems } from '../../redux/slices/selectedSlice';
+import { store } from '../../redux/store';
 import { ThemeProvider } from '../themeContext/ThemeProvider';
 
 import Flyout from './Flyout';
@@ -14,10 +13,6 @@ describe('Flyout', () => {
     vi.clearAllMocks();
     store.dispatch(unselectAllItems());
   });
-
-  const initialState: Partial<RootState> = {};
-
-  const store = createTestStore(initialState);
 
   it('renders correctly with no selected items', () => {
     render(
