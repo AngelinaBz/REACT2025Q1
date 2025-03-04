@@ -1,5 +1,5 @@
-import { Theme } from './ThemeContext';
 import { useTheme } from './UseTheme';
+import { Theme } from '@/utils/types';
 
 const ThemeSelector = () => {
   const { theme, setTheme } = useTheme();

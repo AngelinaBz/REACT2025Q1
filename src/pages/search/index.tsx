@@ -18,6 +18,7 @@ import { setDetails } from '@/redux/slices/detailsSlice';
 import { setPeople } from '@/redux/slices/peopleSlice';
 import { wrapper } from '@/redux/store';
 import { DetailPersonResponse, PeopleResponse } from '@/utils/types';
+import { API_URL } from '@/utils/constants';
 import '@/styles/Main.module.css';
 
 interface MainProps {
@@ -164,13 +165,13 @@ export const getServerSideProps = wrapper.getServerSideProps(
     const page = context.query.page || 1;
     const details = context.query.details;
     const res = await fetch(
-      `https://swapi.dev/api/people/?search=${query}&page=${page}`
+      `${API_URL}/?search=${query}&page=${page}`
     );
     const data: PeopleResponse = await res.json();
     let dataDetailes = null;
     if (details) {
       const resDetailes = await fetch(
-        `https://swapi.dev/api/people/${details}/`
+        `${API_URL}/${details}/`
       );
       dataDetailes = await resDetailes.json();
     }
