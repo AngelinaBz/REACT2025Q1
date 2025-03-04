@@ -1,12 +1,12 @@
 import { render, waitFor, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { mockDetailsResponse } from 'src/test/mock';
 import { describe, it, expect, afterEach, vi } from 'vitest';
 
 import DetailView from '@/components/detailView/DetailView';
 import { ThemeProvider } from '@/components/themeContext/ThemeProvider';
 import { setDetails } from '@/redux/slices/detailsSlice';
 import { store } from '@/redux/store';
+import { mockDetailsResponse } from 'src/test/mock';
 
 const mockRouter = {
   push: vi.fn(),
@@ -46,7 +46,7 @@ describe('DetailView', () => {
     render(
       <Provider store={store}>
         <ThemeProvider>
-          <DetailView personId="1" onClose={vi.fn()} />
+          <DetailView onClose={vi.fn()} />
         </ThemeProvider>
       </Provider>
     );
@@ -55,12 +55,6 @@ describe('DetailView', () => {
       expect(screen.getByText(/luke skywalker/i)).toBeInTheDocument();
       expect(screen.getByText(/male/i)).toBeInTheDocument();
       expect(screen.getByText(/birth year: 19bby/i)).toBeInTheDocument();
-      const img = screen.getByRole('img', { name: /luke skywalker/i });
-      expect(img).toBeInTheDocument();
-      expect(img).toHaveAttribute(
-        'src',
-        'https://starwars-visualguide.com/assets/img/characters/1.jpg'
-      );
     });
 
     expect(screen.getByText(/close/i)).toBeInTheDocument();

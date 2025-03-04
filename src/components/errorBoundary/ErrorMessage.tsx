@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 import { useTheme } from '../themeContext/UseTheme';
 import './ErrorMessage.module.css';
 
@@ -11,7 +13,7 @@ const ErrorMessage = ({ onClose }: ErrorMessageProps) => {
   return (
     <div className="overlay">
       <div className="errorMessage">
-        <img src="./gif.gif" alt="gif" />
+        <Image src="/error.png" alt="NotFound" width={120} height={120} />
         <h1 className="error-title">Something went wrong..</h1>
         <button className={`button-${theme}`} type="button" onClick={onClose}>
           Back

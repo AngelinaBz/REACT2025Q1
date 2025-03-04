@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "lint": "eslint ./src",
-    "lint:fix": "eslint --fix ./src",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "format:fix": "prettier --write .",
     "preview": "vite preview",
     "test": "vitest",

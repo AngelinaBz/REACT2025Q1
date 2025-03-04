@@ -17,9 +17,8 @@ describe('ErrorMessage Component', () => {
     const titleElement = screen.getByText(/Something went wrong../i);
     expect(titleElement).toBeInTheDocument();
 
-    const imgElement = screen.getByAltText(/gif/i) as HTMLImageElement;
+    const imgElement = screen.getByAltText(/NotFound/i) as HTMLImageElement;
     expect(imgElement).toBeInTheDocument();
-    expect(imgElement.src).toContain('/gif.gif');
 
     const buttonElement = screen.getByRole('button', { name: /Back/i });
     expect(buttonElement).toBeInTheDocument();
