@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react';
 
 export const useSearchQuery = () => {
-  const [query, setQuery] = useState<string>('');
-
-  useEffect(() => {
+  const [query, setQuery] = useState<string>(() => {
     if (typeof window !== 'undefined') {
-      const storedQuery = localStorage.getItem('searchQuery');
-      if (storedQuery) {
-        setQuery(storedQuery);
-      }
+      return localStorage.getItem('searchQuery') ?? '';
     }
-  }, []);
+    return '';
+  });
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
