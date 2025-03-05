@@ -28,18 +28,6 @@ describe('DetailView', () => {
     vi.clearAllMocks();
   });
 
-  // it('displays loading indicator while fetching data', async () => {
-  //   const { container } = render(
-  //     <Provider store={store}>
-  //       <ThemeProvider>
-  //         <DetailView personId="1" onClose={vi.fn()} />
-  //       </ThemeProvider>
-  //     </Provider>
-  //   );
-
-  //   expect(container.querySelector('.loading')).toBeInTheDocument();
-  // });
-
   it('fetches and displays person detail', async () => {
     store.dispatch(setDetails(mockDetailsResponse));
 

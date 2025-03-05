@@ -13,6 +13,7 @@ import Search from '@/components/search/Search';
 import { useTheme } from '@/components/themeContext/UseTheme';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
+import { useRouterLoading } from '@/hooks/useRouterLoading';
 import { useSearchQuery } from '@/hooks/useSearchQuery';
 import { setDetails } from '@/redux/slices/detailsSlice';
 import { setPeople } from '@/redux/slices/peopleSlice';
@@ -42,7 +43,7 @@ const Main = ({ data, details }: MainProps) => {
   );
   const people = useAppSelector((state) => state.people.people);
   const totalCount = data.count || 0;
-  const [isLoading, setLoading] = useState(false);
+  const isLoadingMain = useRouterLoading();
 
   useEffect(() => {
     if (data.results) {
@@ -111,19 +112,6 @@ const Main = ({ data, details }: MainProps) => {
     });
   }, [query, page, detailedPerson]);
 
-  useEffect(() => {
-    const routeStart = () => setLoading(true);
-    const routeComplete = () => setLoading(false);
-
-    router.events.on('routeChangeStart', routeStart);
-    router.events.on('routeChangeComplete', routeComplete);
-
-    return () => {
-      router.events.off('routeChangeStart', routeStart);
-      router.events.off('routeChangeComplete', routeComplete);
-    };
-  }, [router]);
-
   if (hasError) {
     return <ErrorMessage onClose={closeErrorMessage} />;
   }
@@ -134,7 +122,7 @@ const Main = ({ data, details }: MainProps) => {
         <Search onSearch={handleSearch} onError={handleError} />
         <div className="main-container">
           <div className="results-container" onClick={handleContainerClick}>
-            {isLoading && !detailedPerson ? (
+            {isLoadingMain && !detailedPerson ? (
               <Loading />
             ) : (
               <>

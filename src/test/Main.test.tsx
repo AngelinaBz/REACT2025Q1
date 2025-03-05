@@ -70,25 +70,6 @@ describe('Main', () => {
     });
   });
 
-  // it('should display loading indicator when data is loading', () => {
-  //   (useGetAllPeopleQuery as Mock).mockReturnValue({
-  //     isLoading: true,
-  //   });
-
-  //   const { container } = render(
-  //     <BrowserRouter>
-  //       <Provider store={store}>
-  //         <ThemeProvider>
-  //           <Main />
-  //         </ThemeProvider>
-  //       </Provider>
-  //     </BrowserRouter>
-  //   );
-
-  //   const loadingIndicator = container.querySelector('.loading');
-  //   expect(loadingIndicator).toBeInTheDocument();
-  // });
-
   // it('should display error message when both queries return errors', async () => {
   //   (useSearchPeopleQuery as Mock).mockReturnValue({
   //     isLoading: false,

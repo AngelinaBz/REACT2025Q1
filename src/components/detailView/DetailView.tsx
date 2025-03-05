@@ -1,10 +1,11 @@
-import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import Loading from '@/components/loading/Loading';
 import { useAppSelector } from '@/hooks/useAppSelector';
+import { useRouterLoading } from '@/hooks/useRouterLoading';
 
 import { useTheme } from '../themeContext/UseTheme';
+
 import './DetailView.module.css';
 
 interface DetailViewProps {
@@ -13,24 +14,10 @@ interface DetailViewProps {
 
 const DetailView = ({ onClose }: DetailViewProps) => {
   const { theme } = useTheme();
-  const router = useRouter();
   const detail = useAppSelector((state) => state.details.person);
-  const [isLoading, setLoading] = useState(false);
+  const isLoadingDetail = useRouterLoading();
 
-  useEffect(() => {
-    const routeStart = () => setLoading(true);
-    const routeComplete = () => setLoading(false);
-
-    router.events.on('routeChangeStart', routeStart);
-    router.events.on('routeChangeComplete', routeComplete);
-
-    return () => {
-      router.events.off('routeChangeStart', routeStart);
-      router.events.off('routeChangeComplete', routeComplete);
-    };
-  }, [router]);
-
-  if (isLoading) {
+  if (isLoadingDetail) {
     return <Loading />;
   }
 
