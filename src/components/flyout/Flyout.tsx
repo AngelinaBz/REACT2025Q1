@@ -1,3 +1,5 @@
+'use client';
+
 import { useRef } from 'react';
 
 import { useAppDispatch } from '@/hooks/useAppDispatch';
@@ -44,6 +46,8 @@ const Flyout = () => {
   };
 
   return (
+    <>
+    {selectedPeople.length > 0 && (
     <div className={`flyout flyout-${theme}`}>
       {selectedPeople.length > 0 && (
         <div className="selected-container">
@@ -58,6 +62,8 @@ const Flyout = () => {
         </div>
       )}
     </div>
+  )}
+    </>
   );
 };
 

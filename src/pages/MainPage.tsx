@@ -33,9 +33,6 @@ const Main = ({ data, details, initialQuery, initialPage }: MainProps) => {
   const [hasError, setHasError] = useState<boolean>(false);
   const [page, setPage] = useState<number>(Number(initialPage));
   const [detailedPerson, setDetailedPerson] = useState<string | null>(null);
-  const selectedPeople = useAppSelector(
-    (state) => state.selected.selectedPeople
-  );
   const people = useAppSelector((state) => state.people.people);
   const totalCount = data.count || 0;
   const isLoadingMain = !data.results;
@@ -51,10 +48,6 @@ const Main = ({ data, details, initialQuery, initialPage }: MainProps) => {
 
   const closeErrorMessage = () => {
     setHasError(false);
-  };
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
   };
 
   const handlePersonClick = (url: string) => {
@@ -80,9 +73,7 @@ const Main = ({ data, details, initialQuery, initialPage }: MainProps) => {
   }
 
   return (
-    <ErrorBoundary>
       <div className={`app ${theme}`}>
-        <Search />
         <div className="main-container">
           <div className="results-container" onClick={handleContainerClick}>
             {isLoadingMain && !detailedPerson ? (
@@ -91,7 +82,6 @@ const Main = ({ data, details, initialQuery, initialPage }: MainProps) => {
               <>
                 <Pagination
                   currentPage={page}
-                  onPageChange={handlePageChange}
                   hasMore={totalCount > page * 10}
                 />
                 <CardList people={people} onPersonClick={handlePersonClick} />
@@ -102,9 +92,7 @@ const Main = ({ data, details, initialQuery, initialPage }: MainProps) => {
             {detailedPerson ? <DetailView onClose={closeDetailView} /> : null}
           </div>
         </div>
-        {selectedPeople.length > 0 && <Flyout />}
       </div>
-    </ErrorBoundary>
   );
 };
 

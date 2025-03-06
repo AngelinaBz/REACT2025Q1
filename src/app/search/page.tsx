@@ -5,6 +5,8 @@ import { DetailPersonResponse } from '@/utils/types';
 import Main from 'src/pages/MainPage';
 
 import LoadingFallback from './loading';
+import Search from '@/components/search/Search';
+import Flyout from '@/components/flyout/Flyout';
 
 export default async function SearchPage({
   searchParams,
@@ -20,6 +22,8 @@ export default async function SearchPage({
   }
 
   return (
+    <>
+    <Search />
     <Suspense fallback={<LoadingFallback />}>
       <Main
         data={data}
@@ -29,5 +33,7 @@ export default async function SearchPage({
       />
       ;
     </Suspense>
+    <Flyout />
+    </>
   );
 }
