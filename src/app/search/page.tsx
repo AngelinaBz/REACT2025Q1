@@ -1,7 +1,6 @@
 import { ReactNode, Suspense } from 'react';
 
-import { fetchPeople, fetchDetails } from '@/utils/api';
-import { DetailPersonResponse } from '@/utils/types';
+import { fetchDetails, fetchPeople } from '@/utils/api';
 import Main from 'src/pages/MainPage';
 
 import LoadingFallback from './loading';
@@ -11,28 +10,23 @@ import Flyout from '@/components/flyout/Flyout';
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ query?: string; page?: string; details?: string }>;
+  searchParams: Promise<{ query?: string; page?: string; id?: string }>;
 }): Promise<ReactNode> {
-  const { query = '', page = '1', details = null } = await searchParams;
+  const { query = '', page = '1', id } = await searchParams;
   const data = await fetchPeople(query, +page);
-  let dataDetails: DetailPersonResponse | null = null;
+  let dataDetails = null;
 
-  if (details) {
-    dataDetails = await fetchDetails(details);
+  if (id) {
+    dataDetails = await fetchDetails(id);
   }
 
   return (
     <>
-    <Search />
-    <Suspense fallback={<LoadingFallback />}>
-      <Main
-        data={data}
-        details={dataDetails}
-        initialPage={page}
-      />
-      ;
-    </Suspense>
-    <Flyout />
+      <Search />
+      <Suspense fallback={<LoadingFallback />}>
+        <Main data={data} initialPage={page} details={dataDetails} />;
+      </Suspense>
+      <Flyout />
     </>
   );
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import Loading from '@/components/loading/Loading';
@@ -6,18 +8,34 @@ import { useAppSelector } from '@/hooks/useAppSelector';
 import { useTheme } from '../themeContext/UseTheme';
 
 import './DetailView.module.css';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { DetailPersonResponse } from '@/utils/types';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { setDetails } from '@/redux/slices/detailsSlice';
 
-interface DetailViewProps {
-  onClose(): void;
+interface DetailsProps {
+  details: DetailPersonResponse | null;
 }
 
-const DetailView = ({ onClose }: DetailViewProps) => {
+const DetailView = ({ details }: DetailsProps) => {
   const { theme } = useTheme();
+  const dispatch = useAppDispatch();
   const detail = useAppSelector((state) => state.details.person);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  if (details) {
+    dispatch(setDetails(details));
+  }
 
   if (!detail) {
     return <Loading />;
   }
+
+  const onClose = () => {
+    const params = new URLSearchParams(searchParams?.toString());
+    router.push(`/search/?${params.toString()}`);
+  };
 
   return (
     <>

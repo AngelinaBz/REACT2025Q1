@@ -14,9 +14,9 @@ export default function RootLayout({
     <html lang="en">
       <body id="__next">
         <ErrorBoundary>
-        <StoreProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-        </StoreProvider>
+          <StoreProvider>
+            <ThemeProvider>{children}</ThemeProvider>
+          </StoreProvider>
         </ErrorBoundary>
       </body>
     </html>

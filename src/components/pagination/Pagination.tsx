@@ -7,10 +7,7 @@ interface PaginationProps {
   hasMore: boolean;
 }
 
-const Pagination = ({
-  currentPage,
-  hasMore,
-}: PaginationProps) => {
+const Pagination = ({ currentPage, hasMore }: PaginationProps) => {
   const { theme } = useTheme();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -19,7 +16,7 @@ const Pagination = ({
     const params = new URLSearchParams(searchParams?.toString());
     params.set('page', page.toString());
     router.push(`search?${params.toString()}`);
-  }
+  };
 
   return (
     <div className="pagination">

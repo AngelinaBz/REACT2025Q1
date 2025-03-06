@@ -47,22 +47,22 @@ const Flyout = () => {
 
   return (
     <>
-    {selectedPeople.length > 0 && (
-    <div className={`flyout flyout-${theme}`}>
       {selectedPeople.length > 0 && (
-        <div className="selected-container">
-          <p>{selectedPeople.length} selected items</p>
-          <button className={`button-${theme}`} onClick={handleUnselectAll}>
-            Unselect all
-          </button>
-          <button className={`button-${theme}`} onClick={downloadCSV}>
-            Download
-          </button>
-          <a ref={downloadLinkRef} href="#" />
+        <div className={`flyout flyout-${theme}`}>
+          {selectedPeople.length > 0 && (
+            <div className="selected-container">
+              <p>{selectedPeople.length} selected items</p>
+              <button className={`button-${theme}`} onClick={handleUnselectAll}>
+                Unselect all
+              </button>
+              <button className={`button-${theme}`} onClick={downloadCSV}>
+                Download
+              </button>
+              <a ref={downloadLinkRef} href="#" />
+            </div>
+          )}
         </div>
       )}
-    </div>
-  )}
     </>
   );
 };
