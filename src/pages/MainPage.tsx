@@ -5,15 +5,11 @@ import React, { useEffect, useState } from 'react';
 import ErrorMessage from '@/components//errorBoundary/ErrorMessage';
 import CardList from '@/components/cardList/CardList';
 import DetailView from '@/components/detailView/DetailView';
-import ErrorBoundary from '@/components/errorBoundary/ErrorBoundary';
-import Flyout from '@/components/flyout/Flyout';
 import Loading from '@/components/loading/Loading';
 import Pagination from '@/components/pagination/Pagination';
-import Search from '@/components/search/Search';
 import { useTheme } from '@/components/themeContext/UseTheme';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
-import { useSearchQuery } from '@/hooks/useSearchQuery';
 import { setDetails } from '@/redux/slices/detailsSlice';
 import { setPeople } from '@/redux/slices/peopleSlice';
 import { DetailPersonResponse, PeopleResponse } from '@/utils/types';
@@ -22,16 +18,13 @@ import '@/styles/Main.module.css';
 interface MainProps {
   data: PeopleResponse;
   details: DetailPersonResponse | null;
-  initialQuery: string;
   initialPage: string;
 }
 
-const Main = ({ data, details, initialQuery, initialPage }: MainProps) => {
+const Main = ({ data, details, initialPage }: MainProps) => {
   const dispatch = useAppDispatch();
-  const [query, setQuery] = useSearchQuery();
   const { theme } = useTheme();
   const [hasError, setHasError] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(Number(initialPage));
   const [detailedPerson, setDetailedPerson] = useState<string | null>(null);
   const people = useAppSelector((state) => state.people.people);
   const totalCount = data.count || 0;
@@ -81,8 +74,8 @@ const Main = ({ data, details, initialQuery, initialPage }: MainProps) => {
             ) : (
               <>
                 <Pagination
-                  currentPage={page}
-                  hasMore={totalCount > page * 10}
+                  currentPage={Number(initialPage)}
+                  hasMore={totalCount > Number(initialPage) * 10}
                 />
                 <CardList people={people} onPersonClick={handlePersonClick} />
               </>

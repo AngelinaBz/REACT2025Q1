@@ -28,7 +28,6 @@ export default async function SearchPage({
       <Main
         data={data}
         details={dataDetails}
-        initialQuery={query}
         initialPage={page}
       />
       ;

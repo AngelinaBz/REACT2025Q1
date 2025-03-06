@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 
 import { useSearchQuery } from '@/hooks/useSearchQuery';
@@ -13,6 +13,7 @@ import './Search.module.css';
 const Search = () => {
   const { theme } = useTheme();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [query, setQuery] = useSearchQuery();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +21,9 @@ const Search = () => {
   };
 
   const handleSearch = () => {
-    router.push(`?q=${query.trim()}`);
+    const params = new URLSearchParams(searchParams?.toString());
+    params.set('query', query.trim());
+    router.push(`search?${params.toString()}`);
   };
 
   const handleError = () => {
