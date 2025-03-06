@@ -2,7 +2,6 @@ import React from 'react';
 
 import Loading from '@/components/loading/Loading';
 import { useAppSelector } from '@/hooks/useAppSelector';
-import { useRouterLoading } from '@/hooks/useRouterLoading';
 
 import { useTheme } from '../themeContext/UseTheme';
 
@@ -15,9 +14,8 @@ interface DetailViewProps {
 const DetailView = ({ onClose }: DetailViewProps) => {
   const { theme } = useTheme();
   const detail = useAppSelector((state) => state.details.person);
-  const isLoadingDetail = useRouterLoading();
 
-  if (isLoadingDetail) {
+  if (!detail) {
     return <Loading />;
   }
 

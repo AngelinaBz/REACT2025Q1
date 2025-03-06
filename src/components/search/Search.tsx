@@ -1,3 +1,6 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { useSearchQuery } from '@/hooks/useSearchQuery';
@@ -7,13 +10,9 @@ import { useTheme } from '../themeContext/UseTheme';
 
 import './Search.module.css';
 
-interface SearchProps {
-  onSearch(query: string): void;
-  onError(): void;
-}
-
-const Search = ({ onSearch, onError }: SearchProps) => {
+const Search = () => {
   const { theme } = useTheme();
+  const router = useRouter();
   const [query, setQuery] = useSearchQuery();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,11 +20,15 @@ const Search = ({ onSearch, onError }: SearchProps) => {
   };
 
   const handleSearch = () => {
-    onSearch(query.trim());
+    router.push(`?q=${query.trim()}`);
   };
 
   const handleError = () => {
-    onError();
+    try {
+      throw new Error('Testing Error');
+    } catch (error) {
+      console.error('Error caught in ErrorBoundary: ', error);
+    }
   };
 
   return (

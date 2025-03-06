@@ -1,5 +1,5 @@
-import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/router';
+'use client';
+
 import React, { useEffect, useState } from 'react';
 
 import ErrorMessage from '@/components//errorBoundary/ErrorMessage';
@@ -13,37 +13,32 @@ import Search from '@/components/search/Search';
 import { useTheme } from '@/components/themeContext/UseTheme';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
-import { useRouterLoading } from '@/hooks/useRouterLoading';
 import { useSearchQuery } from '@/hooks/useSearchQuery';
 import { setDetails } from '@/redux/slices/detailsSlice';
 import { setPeople } from '@/redux/slices/peopleSlice';
-import { wrapper } from '@/redux/store';
-import { API_URL } from '@/utils/constants';
 import { DetailPersonResponse, PeopleResponse } from '@/utils/types';
 import '@/styles/Main.module.css';
 
 interface MainProps {
   data: PeopleResponse;
   details: DetailPersonResponse | null;
+  initialQuery: string;
+  initialPage: string;
 }
 
-const Main = ({ data, details }: MainProps) => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+const Main = ({ data, details, initialQuery, initialPage }: MainProps) => {
   const dispatch = useAppDispatch();
   const [query, setQuery] = useSearchQuery();
   const { theme } = useTheme();
   const [hasError, setHasError] = useState<boolean>(false);
-  const [page, setPage] = useState<number>(
-    parseInt(searchParams.get('page') || '1', 10)
-  );
+  const [page, setPage] = useState<number>(Number(initialPage));
   const [detailedPerson, setDetailedPerson] = useState<string | null>(null);
   const selectedPeople = useAppSelector(
     (state) => state.selected.selectedPeople
   );
   const people = useAppSelector((state) => state.people.people);
   const totalCount = data.count || 0;
-  const isLoadingMain = useRouterLoading();
+  const isLoadingMain = !data.results;
 
   useEffect(() => {
     if (data.results) {
@@ -52,22 +47,7 @@ const Main = ({ data, details }: MainProps) => {
     if (details) {
       dispatch(setDetails(details));
     }
-  }, [dispatch, data, details, router]);
-
-  const handleSearch = (query: string) => {
-    setQuery(query);
-    setPage(1);
-    closeDetailView();
-  };
-
-  const handleError = () => {
-    try {
-      throw new Error('Testing Error');
-    } catch (error) {
-      setHasError(true);
-      console.error('Error caught in ErrorBoundary: ', error);
-    }
-  };
+  }, [dispatch, data, details]);
 
   const closeErrorMessage = () => {
     setHasError(false);
@@ -95,31 +75,14 @@ const Main = ({ data, details }: MainProps) => {
     setDetailedPerson(null);
   };
 
-  useEffect(() => {
-    const params = new URLSearchParams();
-    if (page !== undefined) {
-      params.set('page', String(page));
-    }
-    if (query) {
-      params.set('q', query);
-    }
-    if (detailedPerson) {
-      params.set('details', detailedPerson);
-    }
-    router.replace({
-      pathname: router.pathname,
-      query: Object.fromEntries(params),
-    });
-  }, [query, page, detailedPerson]);
-
   if (hasError) {
     return <ErrorMessage onClose={closeErrorMessage} />;
   }
 
   return (
-    <ErrorBoundary onError={handleError}>
+    <ErrorBoundary>
       <div className={`app ${theme}`}>
-        <Search onSearch={handleSearch} onError={handleError} />
+        <Search />
         <div className="main-container">
           <div className="results-container" onClick={handleContainerClick}>
             {isLoadingMain && !detailedPerson ? (
@@ -144,21 +107,5 @@ const Main = ({ data, details }: MainProps) => {
     </ErrorBoundary>
   );
 };
-
-export const getServerSideProps = wrapper.getServerSideProps(
-  () => async (context) => {
-    const query = context.query.q || '';
-    const page = context.query.page || 1;
-    const details = context.query.details;
-    const res = await fetch(`${API_URL}/?search=${query}&page=${page}`);
-    const data: PeopleResponse = await res.json();
-    let dataDetailes: DetailPersonResponse | null = null;
-    if (details) {
-      const resDetailes = await fetch(`${API_URL}/${details}/`);
-      dataDetailes = await resDetailes.json();
-    }
-    return { props: { data, details: dataDetailes } };
-  }
-);
 
 export default Main;
