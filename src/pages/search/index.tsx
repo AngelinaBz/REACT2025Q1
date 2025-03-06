@@ -152,7 +152,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     const details = context.query.details;
     const res = await fetch(`${API_URL}/?search=${query}&page=${page}`);
     const data: PeopleResponse = await res.json();
-    let dataDetailes = null;
+    let dataDetailes: DetailPersonResponse | null = null;
     if (details) {
       const resDetailes = await fetch(`${API_URL}/${details}/`);
       dataDetailes = await resDetailes.json();
