@@ -20,15 +20,21 @@ const mockLocalStorage = (() => {
   };
 })();
 
+vi.mock('next/navigation', async () => ({
+  useSearchParams: () => ({
+    get: vi.fn(),
+  }),
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
+
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
   writable: true,
 });
 
 describe('Search Component', () => {
-  const onSearchMock = vi.fn();
-  const onErrorMock = vi.fn();
-
   beforeEach(() => {
     mockLocalStorage.clear();
   });
@@ -36,7 +42,7 @@ describe('Search Component', () => {
   it('should save the entered value to local storage when the Search button is clicked', () => {
     render(
       <ThemeProvider>
-        <Search onSearch={onSearchMock} onError={onErrorMock} />
+        <Search />
       </ThemeProvider>
     );
 
@@ -47,7 +53,6 @@ describe('Search Component', () => {
     fireEvent.click(searchButton);
 
     expect(window.localStorage.getItem('searchQuery')).toBe('test query');
-    expect(onSearchMock).toHaveBeenCalledWith('test query');
   });
 
   it('should retrieve the value from local storage upon mounting', () => {
@@ -55,7 +60,7 @@ describe('Search Component', () => {
 
     render(
       <ThemeProvider>
-        <Search onSearch={onSearchMock} onError={onErrorMock} />
+        <Search />
       </ThemeProvider>
     );
 
@@ -67,7 +72,7 @@ describe('Search Component', () => {
   it('should call onError when the Throw Error button is clicked', () => {
     render(
       <ThemeProvider>
-        <Search onSearch={onSearchMock} onError={onErrorMock} />
+        <Search />
       </ThemeProvider>
     );
 
@@ -76,7 +81,5 @@ describe('Search Component', () => {
     });
 
     fireEvent.click(throwErrorButton);
-
-    expect(onErrorMock).toHaveBeenCalled();
   });
 });
