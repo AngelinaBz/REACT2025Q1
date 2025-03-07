@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useSearchQuery } from '@/hooks/useSearchQuery';
 
@@ -14,16 +14,32 @@ const Search = () => {
   const { theme } = useTheme();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const queryParam = searchParams?.get('query');
   const [query, setQuery] = useSearchQuery();
+  const [search, setSearch] = useState<string>(queryParam || query);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    setSearch(event.target.value);
   };
+
+  useEffect(() => {
+    if (query && !queryParam) {
+      const params = new URLSearchParams(searchParams?.toString());
+      params.set('query', query);
+      router.push(`/search/pages?${params.toString()}`);
+    }
+  }, [query, router, searchParams]);
 
   const handleSearch = () => {
     const params = new URLSearchParams(searchParams?.toString());
-    params.set('query', query.trim());
-    router.push(`search?${params.toString()}`);
+    if (search) {
+      params.set('query', search);
+    } else params.delete('query');
+    if (search !== queryParam) {
+      params.set('page', '1');
+    }
+    setQuery(search);
+    router.push(`/search/pages?${params.toString()}`);
   };
 
   const handleError = () => {
@@ -38,7 +54,7 @@ const Search = () => {
     <section className="search-container">
       <input
         type="text"
-        value={query}
+        value={search}
         onChange={handleChange}
         placeholder="Search..."
         aria-label="Search"

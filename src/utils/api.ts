@@ -5,7 +5,9 @@ export async function fetchPeople(
   query: string,
   page: number
 ): Promise<PeopleResponse> {
-  const res = await fetch(`${API_URL}/?search=${query}&page=${page}`);
+  const res = await fetch(`${API_URL}/?search=${query}&page=${page}`, {
+    cache: 'no-store',
+  });
   if (!res.ok) {
     throw new Error('Failed to fetch people');
   }
@@ -13,7 +15,7 @@ export async function fetchPeople(
 }
 
 export async function fetchDetails(id: string): Promise<DetailPersonResponse> {
-  const res = await fetch(`${API_URL}/${id}/`);
+  const res = await fetch(`${API_URL}/${id}/`, { cache: 'no-store' });
   if (!res.ok) {
     throw new Error('Failed to fetch details');
   }

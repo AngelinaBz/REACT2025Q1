@@ -1,14 +1,16 @@
+'use client';
+
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { selectItem, unselectItem } from '@/redux/slices/selectedSlice';
 import { SelectedPerson } from '@/utils/types';
-import Link from 'next/link';
+
 import './Card.module.css';
-import { useSearchParams } from 'next/navigation';
 
-interface CardProps extends SelectedPerson {}
-
-const Card = ({ id, name, gender, url }: CardProps) => {
+const Card = ({ id, name, gender, url }: SelectedPerson) => {
   const selectedPeople = useAppSelector(
     (state) => state.selected.selectedPeople
   );
@@ -25,10 +27,7 @@ const Card = ({ id, name, gender, url }: CardProps) => {
 
   const searchParams = useSearchParams();
   const currentSearchParams = new URLSearchParams(searchParams?.toString());
-  if (id) {
-    currentSearchParams.set('id', id);
-  }
-  const detailPageLink = `/search?${currentSearchParams.toString()}`;
+  const detailPageLink = `/search/pages/${id}?${currentSearchParams.toString()}`;
 
   return (
     <section className="card-container">

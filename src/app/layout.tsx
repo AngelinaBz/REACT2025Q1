@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 
+import ErrorBoundary from '@/components/errorBoundary/ErrorBoundary';
 import { ThemeProvider } from '@/components/themeContext/ThemeProvider';
 import '@/styles/global.css';
 import StoreProvider from '@/redux/storeProvider';
-import ErrorBoundary from '@/components/errorBoundary/ErrorBoundary';
 
 export default function RootLayout({
   children,
@@ -12,12 +12,12 @@ export default function RootLayout({
 }): ReactNode {
   return (
     <html lang="en">
-      <body id="__next">
-        <ErrorBoundary>
-          <StoreProvider>
-            <ThemeProvider>{children}</ThemeProvider>
-          </StoreProvider>
-        </ErrorBoundary>
+      <body>
+        <StoreProvider>
+          <ThemeProvider>
+            <ErrorBoundary>{children}</ErrorBoundary>
+          </ThemeProvider>
+        </StoreProvider>
       </body>
     </html>
   );

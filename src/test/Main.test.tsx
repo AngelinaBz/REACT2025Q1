@@ -1,10 +1,10 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import Main from 'src/app/search';
 import { vi } from 'vitest';
 
 import { ThemeProvider } from '@/components/themeContext/ThemeProvider';
 import { store } from '@/redux/store';
+import Main from 'src/pages/MainPage';
 
 import { mockDetailsResponse, mockPeopleResponse } from './mock';
 

@@ -1,4 +1,7 @@
+'use client';
+
 import { useRouter, useSearchParams } from 'next/navigation';
+
 import { useTheme } from '../themeContext/UseTheme';
 import './Pagination.module.css';
 
@@ -15,7 +18,7 @@ const Pagination = ({ currentPage, hasMore }: PaginationProps) => {
   const onPageChange = (page: number) => {
     const params = new URLSearchParams(searchParams?.toString());
     params.set('page', page.toString());
-    router.push(`search?${params.toString()}`);
+    router.push(`/search/pages?${params.toString()}`);
   };
 
   return (
