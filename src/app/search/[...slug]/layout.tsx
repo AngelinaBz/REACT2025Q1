@@ -5,7 +5,7 @@ import Search from '@/components/search/Search';
 
 const Layout = ({ children }: { children: ReactNode }): React.ReactNode => {
   return (
-    <div className={`app`}>
+    <div className="app">
       <Search />
       <div className="main-container">{children}</div>
       <Flyout />

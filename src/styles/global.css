@@ -22,7 +22,7 @@
 
 a {
   font-weight: 500;
-  color: black;
+  color: inherit;
   text-decoration: inherit;
 }
 
@@ -102,12 +102,12 @@ select:hover {
   min-height: 100vh;
 }
 
-.dark {
+[data-theme='dark'] body {
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 }
 
-.light {
+[data-theme='light'] body {
   color: #213547;
   background-color: #ffffff;
 }
