@@ -13,10 +13,10 @@ export default async function SearchPage({
   searchParams: Promise<{ query?: string; page?: string }>;
 }): Promise<ReactNode> {
   const dataParams = await params;
-  const { query, page = '1' } = await searchParams;
+  const { query, page } = await searchParams;
   const [url, id] = dataParams.slug;
 
-  if (!url) {
+  if (!url || !page) {
     redirect(`/search/pages?page=1`);
   }
 
