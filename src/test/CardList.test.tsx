@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 import CardList from '@/components/cardList/CardList';
 import { store } from '@/redux/store';
@@ -20,11 +20,10 @@ describe('CardList Component', () => {
         url: 'https://swapi.dev/api/people/4/',
       },
     ];
-    const onPersonClick = vi.fn();
 
     render(
       <Provider store={store}>
-        <CardList people={people} onPersonClick={onPersonClick} />
+        <CardList people={people} />
       </Provider>
     );
 
@@ -33,11 +32,9 @@ describe('CardList Component', () => {
   });
 
   it('displays a message when no cards are available', () => {
-    const onPersonClick = vi.fn();
-
     render(
       <Provider store={store}>
-        <CardList people={[]} onPersonClick={onPersonClick} />
+        <CardList people={[]} />
       </Provider>
     );
 

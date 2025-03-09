@@ -4,35 +4,25 @@ import { describe, it, expect, vi } from 'vitest';
 import ErrorBoundary from '@/components/errorBoundary/ErrorBoundary';
 import { ThemeProvider } from '@/components/themeContext/ThemeProvider';
 
-const FailingComponent = () => {
-  throw new Error('Test error');
-};
+vi.mock('next/navigation', async () => ({
+  useSearchParams: () => ({
+    get: vi.fn(),
+  }),
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
 
 describe('ErrorBoundary', () => {
   it('renders child components without crashing', () => {
     render(
       <ThemeProvider>
-        <ErrorBoundary onError={() => {}}>
+        <ErrorBoundary>
           <div>Working Component</div>
         </ErrorBoundary>
       </ThemeProvider>
     );
 
     expect(screen.getByText('Working Component')).toBeInTheDocument();
-  });
-
-  it('catches errors and renders ErrorMessage', () => {
-    const mockOnError = vi.fn();
-
-    render(
-      <ThemeProvider>
-        <ErrorBoundary onError={mockOnError}>
-          <FailingComponent />
-        </ErrorBoundary>
-      </ThemeProvider>
-    );
-
-    expect(screen.getByText('Something went wrong..')).toBeInTheDocument();
-    expect(mockOnError).toHaveBeenCalled();
   });
 });

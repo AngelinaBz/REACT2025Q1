@@ -1,10 +1,11 @@
+'use client';
+
 import { Component, ReactNode, ErrorInfo } from 'react';
 
 import ErrorMessage from './ErrorMessage';
 
 interface Props {
   children: ReactNode;
-  onError(): void;
 }
 
 interface ErrorBoundaryState {
@@ -24,7 +25,6 @@ class ErrorBoundary extends Component<Props, ErrorBoundaryState> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Error caught in ErrorBoundary: ', error, errorInfo);
-    this.props.onError();
   }
 
   closeErrorMessage = () => {

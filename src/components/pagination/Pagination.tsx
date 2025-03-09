@@ -1,18 +1,25 @@
+'use client';
+
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import { useTheme } from '../themeContext/UseTheme';
 import './Pagination.module.css';
 
 interface PaginationProps {
   currentPage: number;
-  onPageChange(page: number): void;
   hasMore: boolean;
 }
 
-const Pagination = ({
-  currentPage,
-  onPageChange,
-  hasMore,
-}: PaginationProps) => {
+const Pagination = ({ currentPage, hasMore }: PaginationProps) => {
   const { theme } = useTheme();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const onPageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams?.toString());
+    params.set('page', page.toString());
+    router.push(`/search/pages?${params.toString()}`);
+  };
 
   return (
     <div className="pagination">

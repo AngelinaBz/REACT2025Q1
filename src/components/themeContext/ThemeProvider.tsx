@@ -1,4 +1,6 @@
-import { useState, ReactNode } from 'react';
+'use client';
+
+import { useState, ReactNode, useEffect } from 'react';
 
 import { Theme } from '@/utils/types';
 
@@ -10,6 +12,10 @@ interface ThemeProviderProps {
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<Theme>('light');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

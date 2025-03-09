@@ -1,15 +1,13 @@
 import { Person } from '@/utils/types';
 
 import Card from '../card/Card';
-
 import './CardList.module.css';
 
 interface CardListProps {
   people: Person[];
-  onPersonClick(url: string): void;
 }
 
-const CardList = ({ people, onPersonClick }: CardListProps) => {
+const CardList = ({ people }: CardListProps) => {
   return (
     <section className="cardlist-container">
       {people.length > 0 ? (
@@ -22,7 +20,6 @@ const CardList = ({ people, onPersonClick }: CardListProps) => {
               url={people.url}
               name={people.name}
               gender={people.gender}
-              onClick={() => onPersonClick(people.url)}
             />
           );
         })

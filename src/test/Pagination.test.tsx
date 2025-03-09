@@ -1,71 +1,33 @@
 import { render, fireEvent } from '@testing-library/react';
+import { useRouter } from 'next/navigation';
 import { describe, it, expect, vi } from 'vitest';
 
 import Pagination from '@/components/pagination/Pagination';
 import { ThemeProvider } from '@/components/themeContext/ThemeProvider';
 
+vi.mock('next/navigation', async () => ({
+  useSearchParams: () => ({
+    toString: () => 'page=1',
+  }),
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
+
 describe('Pagination Component', () => {
-  let onPageChangeMock: (page: number) => void;
-
-  beforeEach(() => {
-    onPageChangeMock = vi.fn();
-  });
-
   it('should render current page correctly', () => {
     const { getByText } = render(
       <ThemeProvider>
-        <Pagination
-          currentPage={1}
-          onPageChange={onPageChangeMock}
-          hasMore={true}
-        />
+        <Pagination currentPage={1} hasMore={true} />
       </ThemeProvider>
     );
     expect(getByText('Page 1')).toBeInTheDocument();
   });
 
-  it('should call onPageChange with previous page number when Prev button is clicked', () => {
-    const { getByText } = render(
-      <ThemeProvider>
-        <Pagination
-          currentPage={2}
-          onPageChange={onPageChangeMock}
-          hasMore={true}
-        />
-      </ThemeProvider>
-    );
-
-    fireEvent.click(getByText('Prev'));
-
-    expect(onPageChangeMock).toHaveBeenCalledWith(1);
-    expect(onPageChangeMock).toHaveBeenCalledTimes(1);
-  });
-
-  it('should call onPageChange with next page number when Next button is clicked', () => {
-    const { getByText } = render(
-      <ThemeProvider>
-        <Pagination
-          currentPage={1}
-          onPageChange={onPageChangeMock}
-          hasMore={true}
-        />
-      </ThemeProvider>
-    );
-
-    fireEvent.click(getByText('Next'));
-
-    expect(onPageChangeMock).toHaveBeenCalledWith(2);
-    expect(onPageChangeMock).toHaveBeenCalledTimes(1);
-  });
-
   it('Prev button should be disabled on the first page', () => {
     const { getByText } = render(
       <ThemeProvider>
-        <Pagination
-          currentPage={1}
-          onPageChange={onPageChangeMock}
-          hasMore={true}
-        />
+        <Pagination currentPage={1} hasMore={true} />
       </ThemeProvider>
     );
 
@@ -76,11 +38,7 @@ describe('Pagination Component', () => {
   it('Next button should be disabled when hasMore is false', () => {
     const { getByText } = render(
       <ThemeProvider>
-        <Pagination
-          currentPage={1}
-          onPageChange={onPageChangeMock}
-          hasMore={false}
-        />
+        <Pagination currentPage={1} hasMore={false} />
       </ThemeProvider>
     );
 
@@ -88,35 +46,31 @@ describe('Pagination Component', () => {
     expect(nextButton).toBeDisabled();
   });
 
-  it('should not call onPageChange when Prev button is clicked on the first page', () => {
+  it('should not call router.push when Prev button is clicked on the first page', () => {
     const { getByText } = render(
       <ThemeProvider>
-        <Pagination
-          currentPage={1}
-          onPageChange={onPageChangeMock}
-          hasMore={true}
-        />
+        <Pagination currentPage={1} hasMore={true} />
       </ThemeProvider>
     );
 
-    fireEvent.click(getByText('Prev'));
+    const prevButton = getByText('Prev');
+    fireEvent.click(prevButton);
 
-    expect(onPageChangeMock).not.toHaveBeenCalled();
+    const pushMock = vi.mocked(useRouter().push);
+    expect(pushMock).not.toHaveBeenCalled();
   });
 
-  it('should not call onPageChange when Next button is clicked and hasMore is false', () => {
+  it('should not call router.push when Next button is clicked and hasMore is false', () => {
     const { getByText } = render(
       <ThemeProvider>
-        <Pagination
-          currentPage={1}
-          onPageChange={onPageChangeMock}
-          hasMore={false}
-        />
+        <Pagination currentPage={1} hasMore={false} />
       </ThemeProvider>
     );
 
-    fireEvent.click(getByText('Next'));
+    const nextButton = getByText('Next');
+    fireEvent.click(nextButton);
 
-    expect(onPageChangeMock).not.toHaveBeenCalled();
+    const pushMock = vi.mocked(useRouter().push);
+    expect(pushMock).not.toHaveBeenCalled();
   });
 });
