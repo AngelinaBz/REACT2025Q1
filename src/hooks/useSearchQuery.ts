@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
 
+import { LS_QUERY } from '@/utils/constants';
+
 export const useSearchQuery = () => {
-  const [query, setQuery] = useState<string>(
-    localStorage.getItem('searchQuery') || ''
-  );
+  const [query, setQuery] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(LS_QUERY) ?? '';
+    }
+    return '';
+  });
 
   useEffect(() => {
-    localStorage.setItem('searchQuery', query);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(LS_QUERY, query);
+    }
   }, [query]);
 
   return [query, setQuery] as const;

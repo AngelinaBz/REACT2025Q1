@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { SelectedPerson } from '../../utils/types';
+import { SelectedPerson } from '@/utils/types';
 
 interface SelectedState {
   selectedPeople: SelectedPerson[];

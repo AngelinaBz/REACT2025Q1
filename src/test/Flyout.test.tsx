@@ -2,11 +2,10 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { describe, it, expect, vi } from 'vitest';
 
-import { selectItem, unselectAllItems } from '../../redux/slices/selectedSlice';
-import { store } from '../../redux/store';
-import { ThemeProvider } from '../themeContext/ThemeProvider';
-
-import Flyout from './Flyout';
+import Flyout from '@/components/flyout/Flyout';
+import { ThemeProvider } from '@/components/themeContext/ThemeProvider';
+import { selectItem, unselectAllItems } from '@/redux/slices/selectedSlice';
+import { store } from '@/redux/store';
 
 describe('Flyout', () => {
   beforeEach(() => {

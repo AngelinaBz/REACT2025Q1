@@ -2,10 +2,9 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { describe, it, expect, vi } from 'vitest';
 
-import { selectItem, unselectAllItems } from '../../redux/slices/selectedSlice';
-import { store } from '../../redux/store';
-
-import Card from './Card';
+import Card from '@/components/card/Card';
+import { selectItem, unselectAllItems } from '@/redux/slices/selectedSlice';
+import { store } from '@/redux/store';
 
 describe('Card Component', () => {
   beforeEach(() => {

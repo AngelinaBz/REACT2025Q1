@@ -1,49 +1,41 @@
-import { useFetchDetailPersonQuery } from '../../redux/slices/starWarsApi';
-import Loading from '../loading/Loading';
+import React from 'react';
+
+import Loading from '@/components/loading/Loading';
+import { useAppSelector } from '@/hooks/useAppSelector';
+import { useRouterLoading } from '@/hooks/useRouterLoading';
+
 import { useTheme } from '../themeContext/UseTheme';
-import './DetailView.css';
+
+import './DetailView.module.css';
 
 interface DetailViewProps {
-  personId: string;
   onClose(): void;
 }
 
-const DetailView = ({ personId, onClose }: DetailViewProps) => {
-  const {
-    data: detail,
-    error,
-    isLoading,
-  } = useFetchDetailPersonQuery(personId);
+const DetailView = ({ onClose }: DetailViewProps) => {
   const { theme } = useTheme();
+  const detail = useAppSelector((state) => state.details.person);
+  const isLoadingDetail = useRouterLoading();
 
-  if (isLoading) {
+  if (isLoadingDetail) {
     return <Loading />;
   }
 
-  if (error) {
-    console.error('Error fetching detail:', error);
-  }
-
-  if (!detail) {
-    return <div>Error loading detail</div>;
-  }
-
   return (
-    <div className="detail-view">
-      <img
-        className="detail-view__image"
-        src={`https://starwars-visualguide.com/assets/img/characters/${personId}.jpg`}
-        alt={detail.name || 'Unknown character'}
-      ></img>
-      <h2 className="detail-view__name">{detail.name}</h2>
-      <p className="detail-view__information">Gender: {detail.gender}</p>
-      <p className="detail-view__information">
-        Birth Year: {detail.birth_year}
-      </p>
-      <button className={`button-${theme}`} onClick={onClose}>
-        Close
-      </button>
-    </div>
+    <>
+      {detail && (
+        <div className="detail-view">
+          <h2 className="detail-view__name">{detail.name}</h2>
+          <p className="detail-view__information">Gender: {detail.gender}</p>
+          <p className="detail-view__information">
+            Birth Year: {detail.birth_year}
+          </p>
+          <button className={`button-${theme}`} onClick={onClose}>
+            Close
+          </button>
+        </div>
+      )}
+    </>
   );
 };
 

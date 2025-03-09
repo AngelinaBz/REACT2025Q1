@@ -18,3 +18,5 @@ export interface PeopleResponse {
 }
 
 export type DetailPersonResponse = PersonDetail;
+
+export type Theme = 'light' | 'dark';

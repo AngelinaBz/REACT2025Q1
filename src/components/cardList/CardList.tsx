@@ -1,6 +1,8 @@
-import { Person } from '../../utils/types';
+import { Person } from '@/utils/types';
+
 import Card from '../card/Card';
-import './CardList.css';
+
+import './CardList.module.css';
 
 interface CardListProps {
   people: Person[];

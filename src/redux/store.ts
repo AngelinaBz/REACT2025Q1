@@ -1,18 +1,25 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { createWrapper } from 'next-redux-wrapper';
 
+import detailsReducer from './slices/detailsSlice';
+import peopleReducer from './slices/peopleSlice';
 import selectedReducer from './slices/selectedSlice';
-import { starWarsApi } from './slices/starWarsApi';
 
-export const store = configureStore({
-  reducer: {
-    [starWarsApi.reducerPath]: starWarsApi.reducer,
-    selected: selectedReducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(starWarsApi.middleware),
+const rootReducer = combineReducers({
+  people: peopleReducer,
+  details: detailsReducer,
+  selected: selectedReducer,
 });
-setupListeners(store.dispatch);
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export const makeStore = () =>
+  configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  });
+
+export const store = makeStore();
+export type AppStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<AppStore['getState']>;
+export type AppDispatch = AppStore['dispatch'];
+
+export const wrapper = createWrapper<AppStore>(makeStore, { debug: false });
