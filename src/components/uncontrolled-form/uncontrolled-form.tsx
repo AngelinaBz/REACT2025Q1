@@ -1,8 +1,8 @@
 import { FormEvent, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
-import './uncontrolled-form.css';
 import { addUncontrolledFormData } from '../../redux/slices/formSlice';
+import './uncontrolled-form.css';
 
 const UncontrolledForm = () => {
   const dispatch = useDispatch();
