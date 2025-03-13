@@ -9,3 +9,15 @@ export interface FormInput {
   picture: FileList;
   country: string;
 }
+
+export interface FormDataRedux {
+  name: string;
+  age: string;
+  email: string;
+  password: string;
+  repeatPassword: string;
+  gender: string;
+  terms: boolean;
+  picture: string;
+  country: string;
+}

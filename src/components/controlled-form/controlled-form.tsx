@@ -1,5 +1,7 @@
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
+import { addControlledFormData } from '../../redux/slices/formSlice';
 import { FormInput } from '../../types/types';
 import './controlled-form.css';
 
@@ -10,8 +12,34 @@ const ControlledForm = () => {
     formState: { errors },
   } = useForm<FormInput>();
 
-  const onSubmit = (data: FormInput) => {
-    console.log(data);
+  const dispatch = useDispatch();
+
+  const convertFileToBase64 = (file: File | null): Promise<string | null> => {
+    return new Promise((resolve, reject) => {
+      if (!file) {
+        resolve(null);
+        return;
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        resolve(reader.result as string);
+      };
+      reader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const onSubmit = async (data: FormInput) => {
+    const convertedPicture = await convertFileToBase64(data.picture[0]);
+    const convertedData = {
+      ...data,
+      age: data.age.toString() || '',
+      picture: convertedPicture || '',
+    };
+    dispatch(addControlledFormData(convertedData));
+    console.log(convertedData);
   };
 
   return (

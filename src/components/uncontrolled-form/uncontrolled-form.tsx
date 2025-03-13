@@ -1,7 +1,11 @@
 import { FormEvent, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+
 import './uncontrolled-form.css';
+import { addUncontrolledFormData } from '../../redux/slices/formSlice';
 
 const UncontrolledForm = () => {
+  const dispatch = useDispatch();
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -12,20 +16,33 @@ const UncontrolledForm = () => {
   const pictureRef = useRef<HTMLInputElement>(null);
   const countryRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const data = {
-      name: nameRef.current?.value || '',
-      age: ageRef.current?.value || '',
-      email: emailRef.current?.value || '',
-      password1: passwordRef.current?.value || '',
-      password2: passwordRepeatRef.current?.value || '',
-      gender: genderRef.current?.value || '',
-      termsAccepted: termsRef.current?.checked,
-      picture: pictureRef.current?.files?.[0],
-      country: countryRef.current?.value || '',
-    };
-    console.log(data);
+    const file = pictureRef.current?.files?.[0];
+    let base64String = '';
+    try {
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          base64String = reader.result as string;
+        };
+        reader.readAsDataURL(file);
+      }
+      const data = {
+        name: nameRef.current?.value || '',
+        age: ageRef.current?.value || '',
+        email: emailRef.current?.value || '',
+        password: passwordRef.current?.value || '',
+        repeatPassword: passwordRepeatRef.current?.value || '',
+        gender: genderRef.current?.value || '',
+        terms: termsRef.current?.checked ?? false,
+        picture: base64String,
+        country: countryRef.current?.value || '',
+      };
+      dispatch(addUncontrolledFormData(data));
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
