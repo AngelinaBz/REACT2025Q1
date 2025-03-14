@@ -14,9 +14,9 @@ export const schema = yup.object().shape({
     ),
   age: yup
     .number()
+    .typeError('Age is required')
     .required('Age is required')
-    .min(0, 'Age must be a positive integer')
-    .integer('Age must be an integer'),
+    .min(0, 'Age must be a positive integer'),
   email: yup.string().required('Email is required').email('Email is invalid'),
   password: yup
     .string()
@@ -46,11 +46,11 @@ export const schema = yup.object().shape({
   picture: yup
     .mixed<FileList>()
     .required()
+    .test('fileRequired', 'Picture is required', (value) => !!value?.length)
     .test('fileSize', 'File size is too large', (value) => {
       if (!value || !value.length) return false;
       return value[0].size <= MAX_FILE_SIZE;
     })
-    .test('fileRequired', 'Picture is required', (value) => !!value?.length)
     .test('fileType', 'Unsupported file format', (value) => {
       if (!value || !value.length) return false;
       return ['image/png', 'image/jpeg'].includes(value[0].type);
