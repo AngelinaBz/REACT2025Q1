@@ -1,9 +1,11 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
 import { addControlledFormData } from '../../redux/slices/form-slice';
 import { FormInput } from '../../types/types';
+import { schema } from '../../validation/yup';
 import CountryAutocomplete from '../country-autocomplete/country-autocomplete';
 import './controlled-form.css';
 
@@ -12,8 +14,8 @@ const ControlledForm = () => {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
-  } = useForm<FormInput>();
+    formState: { isValid, errors },
+  } = useForm<FormInput>({ resolver: yupResolver(schema), mode: 'onChange' });
 
   const [country, setCountry] = useState('');
   const dispatch = useDispatch();
@@ -50,22 +52,22 @@ const ControlledForm = () => {
     <form className="controlled-form" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="name">Name:</label>
       <input {...register('name')} />
-      {errors.name && <span>errors.name.message</span>}
+      {errors.name && <span>{errors.name.message}</span>}
 
       <label htmlFor="age">Age:</label>
       <input type="number" {...register('age')} />
-      {errors.age && <span>errors.age.message</span>}
+      {errors.age && <span>{errors.age.message}</span>}
 
       <label htmlFor="email">Email:</label>
       <input type="email" {...register('email')} />
-      {errors.email && <span>errors.email.message</span>}
+      {errors.email && <span>{errors.email.message}</span>}
 
-      <label htmlFor="password1">Password:</label>
+      <label htmlFor="password">Password:</label>
       <input type="password" {...register('password')} />
       {errors.password && <span>{errors.password.message}</span>}
 
-      <label htmlFor="password2">Repeat Password:</label>
-      <input type="password" {...register('password')} />
+      <label htmlFor="repeatPassword">Repeat Password:</label>
+      <input type="password" {...register('repeatPassword')} />
       {errors.repeatPassword && <span>{errors.repeatPassword.message}</span>}
 
       <label htmlFor="gender">Gender:</label>
@@ -93,7 +95,9 @@ const ControlledForm = () => {
       />
       {errors.country && <span>{errors.country.message}</span>}
 
-      <button type="submit">Submit</button>
+      <button type="submit" disabled={!isValid}>
+        Submit
+      </button>
     </form>
   );
 };
