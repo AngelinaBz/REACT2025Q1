@@ -15,8 +15,6 @@ const CountryAutocomplete = forwardRef<
 >(({ value, onChange }, ref) => {
   const countries = useSelector(selectCountries);
   const [query, setQuery] = useState(value || '');
-  const [filteredCountries, setFilteredCountries] = useState<string[]>([]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     setQuery(value || '');
@@ -25,45 +23,26 @@ const CountryAutocomplete = forwardRef<
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
-    setFilteredCountries(
-      countries.filter((country) =>
-        country.toLowerCase().includes(value.toLowerCase())
-      )
-    );
-    setIsDropdownOpen(true);
     if (onChange) {
       onChange(value);
     }
-  };
-
-  const handleSelect = (country: string) => {
-    setQuery(country);
-    if (onChange) {
-      onChange(country);
-    }
-    setIsDropdownOpen(false);
-    setFilteredCountries([]);
   };
 
   return (
     <div className="country-autocomplete">
       <input
         type="text"
+        list="countries-list"
         value={query}
         ref={ref}
         onChange={handleChange}
         placeholder="Select Country"
-        onFocus={() => setIsDropdownOpen(true)}
       />
-      {isDropdownOpen && filteredCountries.length > 0 && (
-        <ul>
-          {filteredCountries.map((country, index) => (
-            <li key={index} onClick={() => handleSelect(country)}>
-              {country}
-            </li>
-          ))}
-        </ul>
-      )}
+      <datalist id="countries-list">
+        {countries.map((country, index) => (
+          <option key={index} value={country} />
+        ))}
+      </datalist>
     </div>
   );
 });
