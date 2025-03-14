@@ -1,0 +1,36 @@
+.country-autocomplete {
+  position: relative;
+}
+
+.country-autocomplete input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.country-autocomplete ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 1000;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.country-autocomplete li {
+  padding: 3px;
+  cursor: pointer;
+}
+
+.country-autocomplete li:hover {
+  background-color: #f0f0f0;
+}

@@ -1,18 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { countries } from '../../types/countries';
 import { FormDataRedux } from '../../types/types';
 
 interface FormState {
   uncontrolledFormData: FormDataRedux[];
   controlledFormData: FormDataRedux[];
-  countries: string[];
 }
 
 const initialState: FormState = {
   uncontrolledFormData: [],
   controlledFormData: [],
-  countries: countries,
 };
 
 const formSlice = createSlice({

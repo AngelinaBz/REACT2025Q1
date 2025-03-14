@@ -1,7 +1,8 @@
 import { FormEvent, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { addUncontrolledFormData } from '../../redux/slices/formSlice';
+import { addUncontrolledFormData } from '../../redux/slices/form-slice';
+import CountryAutocomplete from '../country-autocomplete/country-autocomplete';
 import './uncontrolled-form.css';
 
 const UncontrolledForm = () => {
@@ -35,7 +36,7 @@ const UncontrolledForm = () => {
         password: passwordRef.current?.value || '',
         repeatPassword: passwordRepeatRef.current?.value || '',
         gender: genderRef.current?.value || '',
-        terms: termsRef.current?.checked ?? false,
+        terms: !!termsRef.current?.checked,
         picture: base64String,
         country: countryRef.current?.value || '',
       };
@@ -61,12 +62,13 @@ const UncontrolledForm = () => {
       <select ref={genderRef}>
         <option value="male">Male</option>
         <option value="female">Female</option>
-        <option value="other">Other</option>
       </select>
       <label>Accept Terms and Conditions</label>
       <input type="checkbox" ref={termsRef} />
       <label htmlFor="picture">Upload Picture:</label>
       <input type="file" id="picture" ref={pictureRef} />
+      <label htmlFor="country">Select Country:</label>
+      <CountryAutocomplete ref={countryRef} />
       <button type="submit">Submit</button>
     </form>
   );

@@ -1,17 +1,21 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
-import { addControlledFormData } from '../../redux/slices/formSlice';
+import { addControlledFormData } from '../../redux/slices/form-slice';
 import { FormInput } from '../../types/types';
+import CountryAutocomplete from '../country-autocomplete/country-autocomplete';
 import './controlled-form.css';
 
 const ControlledForm = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormInput>();
 
+  const [country, setCountry] = useState('');
   const dispatch = useDispatch();
 
   const convertFileToBase64 = (file: File | null): Promise<string | null> => {
@@ -68,7 +72,6 @@ const ControlledForm = () => {
       <select {...register('gender')}>
         <option value="male">Male</option>
         <option value="female">Female</option>
-        <option value="other">Other</option>
       </select>
       {errors.gender && <span>{errors.gender.message}</span>}
 
@@ -79,6 +82,16 @@ const ControlledForm = () => {
       <label htmlFor="picture">Upload Picture:</label>
       <input type="file" {...register('picture')} />
       {errors.picture && <span>{errors.picture.message}</span>}
+
+      <label htmlFor="country">Select Country:</label>
+      <CountryAutocomplete
+        value={country}
+        onChange={(value) => {
+          setCountry(value);
+          setValue('country', value, { shouldValidate: true });
+        }}
+      />
+      {errors.country && <span>{errors.country.message}</span>}
 
       <button type="submit">Submit</button>
     </form>
