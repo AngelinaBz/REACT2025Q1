@@ -58,9 +58,7 @@ const UncontrolledForm = () => {
         const validationErrors = error.inner.reduce(
           (acc: { [key: string]: string }, err) => {
             if (err.path) {
-              if (!acc[err.path]) {
-                acc[err.path] = err.message;
-              }
+              acc[err.path] = err.message;
             }
             return acc;
           },
