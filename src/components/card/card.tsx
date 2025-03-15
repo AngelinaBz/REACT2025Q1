@@ -7,7 +7,7 @@ interface CardProps {
 
 const Card = ({ data }: CardProps) => {
   return (
-    <div className="data-card">
+    <div className="card">
       {data.picture && (
         <div>
           <strong>Profile Picture:</strong>
