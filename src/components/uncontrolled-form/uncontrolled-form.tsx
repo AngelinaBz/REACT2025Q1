@@ -46,13 +46,21 @@ const UncontrolledForm = () => {
         const reader = new FileReader();
         reader.onloadend = () => {
           const base64String = reader.result as string;
-          const convertedData = { ...data, picture: base64String };
+          const convertedData = {
+            id: Date.now().toString(),
+            ...data,
+            picture: base64String,
+          };
           dispatch(addUncontrolledFormData(convertedData));
           navigate('/');
         };
         reader.readAsDataURL(file);
       } else {
-        const convertedData = { ...data, picture: '' };
+        const convertedData = {
+          id: Date.now().toString(),
+          ...data,
+          picture: '',
+        };
         dispatch(addUncontrolledFormData(convertedData));
         navigate('/');
       }

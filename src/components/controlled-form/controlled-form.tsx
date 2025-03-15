@@ -44,13 +44,13 @@ const ControlledForm = () => {
   const onSubmit = async (data: FormInput) => {
     const convertedPicture = await convertFileToBase64(data.picture[0]);
     const convertedData = {
+      id: Date.now().toString(),
       ...data,
       age: data.age.toString() || '',
       picture: convertedPicture || '',
     };
     dispatch(addControlledFormData(convertedData));
     navigate('/');
-    console.log(convertedData);
   };
 
   return (

@@ -11,6 +11,7 @@ export interface FormInput {
 }
 
 export interface FormDataRedux {
+  id: string;
   name: string;
   age: string;
   email: string;

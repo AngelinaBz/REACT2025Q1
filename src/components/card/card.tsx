@@ -3,36 +3,36 @@ import './card.css';
 
 interface CardProps {
   data: FormDataRedux;
+  isLastAdded: boolean;
 }
 
-const Card = ({ data }: CardProps) => {
+const Card = ({ data, isLastAdded }: CardProps) => {
   return (
-    <div className="card">
+    <div className={`card ${isLastAdded ? 'highlight' : ''}`}>
       {data.picture && (
         <div>
-          <strong>Profile Picture:</strong>
           <img src={data.picture} alt="Profile" className="profile-picture" />
         </div>
       )}
-      <p>
+      <p className="card-information">
         <strong>Name:</strong> {data.name}
       </p>
-      <p>
+      <p className="card-information">
         <strong>Age:</strong> {data.age}
       </p>
-      <p>
+      <p className="card-information">
         <strong>Email:</strong> {data.email}
       </p>
-      <p>
+      <p className="card-information">
         <strong>Password:</strong> {data.password}
       </p>
-      <p>
+      <p className="card-information">
         <strong>Gender:</strong> {data.gender}
       </p>
-      <p>
+      <p className="card-information">
         <strong>Country:</strong> {data.country}
       </p>
-      <p>
+      <p className="card-information">
         <strong>Terms Accepted:</strong> {data.terms ? 'Yes' : 'No'}
       </p>
     </div>
