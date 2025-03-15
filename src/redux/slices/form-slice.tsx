@@ -17,7 +17,7 @@ const formSlice = createSlice({
   initialState,
   reducers: {
     addUncontrolledFormData: (state, action: PayloadAction<FormDataRedux>) => {
-      state.controlledFormData.push(action.payload);
+      state.uncontrolledFormData.push(action.payload);
     },
     addControlledFormData: (state, action: PayloadAction<FormDataRedux>) => {
       state.controlledFormData.push(action.payload);

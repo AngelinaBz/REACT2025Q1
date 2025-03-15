@@ -1,5 +1,6 @@
 import { FormEvent, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { ValidationError } from 'yup';
 
 import { addUncontrolledFormData } from '../../redux/slices/form-slice';
@@ -9,6 +10,7 @@ import './uncontrolled-form.css';
 
 const UncontrolledForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const nameRef = useRef<HTMLInputElement>(null);
@@ -43,11 +45,13 @@ const UncontrolledForm = () => {
           const base64String = reader.result as string;
           const convertedData = { ...data, picture: base64String };
           dispatch(addUncontrolledFormData(convertedData));
+          navigate('/');
         };
         reader.readAsDataURL(file);
       } else {
         const convertedData = { ...data, picture: '' };
         dispatch(addUncontrolledFormData(convertedData));
+        navigate('/');
       }
     } catch (error) {
       if (error instanceof ValidationError) {
@@ -71,24 +75,24 @@ const UncontrolledForm = () => {
     <form className="uncontrolled-form" onSubmit={handleSubmit}>
       <label htmlFor="name">Name:</label>
       <input type="text" ref={nameRef} />
-      {errors.name && <p className="error">{errors.name}</p>}
+      {errors.name && <p className="error">*{errors.name}</p>}
 
       <label htmlFor="age">Age:</label>
       <input type="number" ref={ageRef} />
-      {errors.age && <p className="error">{errors.age}</p>}
+      {errors.age && <p className="error">*{errors.age}</p>}
 
       <label htmlFor="email">Email:</label>
       <input type="email" ref={emailRef} />
-      {errors.email && <p className="error">{errors.email}</p>}
+      {errors.email && <p className="error">*{errors.email}</p>}
 
       <label htmlFor="password">Password:</label>
       <input type="password" ref={passwordRef} />
-      {errors.password && <p className="error">{errors.password}</p>}
+      {errors.password && <p className="error">*{errors.password}</p>}
 
       <label htmlFor="passwordRepeat">Repeat Password:</label>
       <input type="password" ref={passwordRepeatRef} />
       {errors.repeatPassword && (
-        <p className="error">{errors.repeatPassword}</p>
+        <p className="error">*{errors.repeatPassword}</p>
       )}
 
       <label htmlFor="gender">Gender:</label>
@@ -96,19 +100,19 @@ const UncontrolledForm = () => {
         <option value="male">Male</option>
         <option value="female">Female</option>
       </select>
-      {errors.gender && <p className="error">{errors.gender}</p>}
+      {errors.gender && <p className="error">*{errors.gender}</p>}
 
       <label>Accept Terms and Conditions</label>
       <input type="checkbox" ref={termsRef} />
-      {errors.terms && <p className="error">{errors.terms}</p>}
+      {errors.terms && <p className="error">*{errors.terms}</p>}
 
       <label htmlFor="picture">Upload Picture:</label>
       <input type="file" id="picture" ref={pictureRef} />
-      {errors.picture && <p className="error">{errors.picture}</p>}
+      {errors.picture && <p className="error">*{errors.picture}</p>}
 
       <label htmlFor="country">Select Country:</label>
       <CountryAutocomplete ref={countryRef} />
-      {errors.country && <p className="error">{errors.country}</p>}
+      {errors.country && <p className="error">*{errors.country}</p>}
 
       <button type="submit">Submit</button>
     </form>

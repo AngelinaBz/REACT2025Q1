@@ -2,6 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { addControlledFormData } from '../../redux/slices/form-slice';
 import { FormInput } from '../../types/types';
@@ -19,6 +20,7 @@ const ControlledForm = () => {
 
   const [country, setCountry] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const convertFileToBase64 = (file: File | null): Promise<string | null> => {
     return new Promise((resolve, reject) => {
@@ -45,6 +47,7 @@ const ControlledForm = () => {
       picture: convertedPicture || '',
     };
     dispatch(addControlledFormData(convertedData));
+    navigate('/');
     console.log(convertedData);
   };
 
@@ -52,38 +55,40 @@ const ControlledForm = () => {
     <form className="controlled-form" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="name">Name:</label>
       <input {...register('name')} />
-      {errors.name && <span>{errors.name.message}</span>}
+      {errors.name && <p className="error">*{errors.name.message}</p>}
 
       <label htmlFor="age">Age:</label>
       <input type="number" {...register('age')} />
-      {errors.age && <span>{errors.age.message}</span>}
+      {errors.age && <p className="error">*{errors.age.message}</p>}
 
       <label htmlFor="email">Email:</label>
       <input type="email" {...register('email')} />
-      {errors.email && <span>{errors.email.message}</span>}
+      {errors.email && <p className="error">*{errors.email.message}</p>}
 
       <label htmlFor="password">Password:</label>
       <input type="password" {...register('password')} />
-      {errors.password && <span>{errors.password.message}</span>}
+      {errors.password && <p className="error">*{errors.password.message}</p>}
 
       <label htmlFor="repeatPassword">Repeat Password:</label>
       <input type="password" {...register('repeatPassword')} />
-      {errors.repeatPassword && <span>{errors.repeatPassword.message}</span>}
+      {errors.repeatPassword && (
+        <p className="error">*{errors.repeatPassword.message}</p>
+      )}
 
       <label htmlFor="gender">Gender:</label>
       <select {...register('gender')}>
         <option value="male">Male</option>
         <option value="female">Female</option>
       </select>
-      {errors.gender && <span>{errors.gender.message}</span>}
+      {errors.gender && <p className="error">*{errors.gender.message}</p>}
 
       <label>Accept Terms and Conditions</label>
       <input type="checkbox" {...register('terms')} />
-      {errors.terms && <span>{errors.terms.message}</span>}
+      {errors.terms && <p className="error">*{errors.terms.message}</p>}
 
       <label htmlFor="picture">Upload Picture:</label>
       <input type="file" {...register('picture')} />
-      {errors.picture && <span>{errors.picture.message}</span>}
+      {errors.picture && <p className="error">*{errors.picture.message}</p>}
 
       <label htmlFor="country">Select Country:</label>
       <CountryAutocomplete
@@ -93,7 +98,7 @@ const ControlledForm = () => {
           setValue('country', value, { shouldValidate: true });
         }}
       />
-      {errors.country && <span>{errors.country.message}</span>}
+      {errors.country && <p className="error">*{errors.country.message}</p>}
 
       <button type="submit" disabled={!isValid}>
         Submit

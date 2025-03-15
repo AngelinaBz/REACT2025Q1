@@ -1,4 +1,12 @@
 .uncontrolled-form {
   display: flex;
   flex-direction: column;
+  gap: 5px;
+}
+
+.error {
+  margin: 0;
+  color: red;
+  text-align: start;
+  font-size: 0.8rem;
 }
