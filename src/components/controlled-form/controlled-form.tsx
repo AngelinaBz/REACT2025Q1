@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { addControlledFormData } from '../../redux/slices/form-slice';
 import { FormInput } from '../../types/types';
+import PasswordStrength from '../../utils/password-strength/password-strength';
 import { schema } from '../../validation/yup';
 import CountryAutocomplete from '../country-autocomplete/country-autocomplete';
 import './controlled-form.css';
@@ -19,6 +20,7 @@ const ControlledForm = () => {
   } = useForm<FormInput>({ resolver: yupResolver(schema), mode: 'onChange' });
 
   const [country, setCountry] = useState('');
+  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -66,8 +68,17 @@ const ControlledForm = () => {
       {errors.email && <p className="error">*{errors.email.message}</p>}
 
       <label htmlFor="password">Password:</label>
-      <input type="password" {...register('password')} />
+      <input
+        type="password"
+        {...register('password', {
+          onChange: (e) => {
+            const newPassword = e.target.value;
+            setPassword(newPassword);
+          },
+        })}
+      />
       {errors.password && <p className="error">*{errors.password.message}</p>}
+      <PasswordStrength password={password} />
 
       <label htmlFor="repeatPassword">Repeat Password:</label>
       <input type="password" {...register('repeatPassword')} />

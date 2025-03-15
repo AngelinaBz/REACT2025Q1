@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ValidationError } from 'yup';
 
 import { addUncontrolledFormData } from '../../redux/slices/form-slice';
+import PasswordStrength from '../../utils/password-strength/password-strength';
 import { schema } from '../../validation/yup';
 import CountryAutocomplete from '../country-autocomplete/country-autocomplete';
 import './uncontrolled-form.css';
@@ -11,6 +12,7 @@ import './uncontrolled-form.css';
 const UncontrolledForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const nameRef = useRef<HTMLInputElement>(null);
@@ -37,6 +39,7 @@ const UncontrolledForm = () => {
       picture: pictureRef.current?.files || '',
       country: countryRef.current?.value || '',
     };
+    setPassword(data.password);
     try {
       schema.validateSync(data, { abortEarly: false });
       if (file) {
@@ -86,6 +89,7 @@ const UncontrolledForm = () => {
       <label htmlFor="password">Password:</label>
       <input type="password" ref={passwordRef} />
       {errors.password && <p className="error">*{errors.password}</p>}
+      <PasswordStrength password={password} />
 
       <label htmlFor="passwordRepeat">Repeat Password:</label>
       <input type="password" ref={passwordRepeatRef} />
