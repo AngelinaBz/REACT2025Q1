@@ -9,8 +9,9 @@ export const schema = yup.object().shape({
     .string()
     .required('Name is required')
     .test(
+      'is-first-letter-uppercase',
       'The name should be starts with uppercase letter',
-      (value) => !!value && value[0] === value[0].toUpperCase()
+      (value) => /^[A-ZА-Я]/.test(value[0])
     ),
   age: yup
     .number()

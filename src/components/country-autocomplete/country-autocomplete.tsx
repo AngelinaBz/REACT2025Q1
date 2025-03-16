@@ -6,7 +6,7 @@ import './country-autocomplete.css';
 
 interface CountryAutocompleteProps {
   value?: string;
-  onChange?: (value: string) => void;
+  onChange?(value: string): void;
 }
 
 const CountryAutocomplete = forwardRef<

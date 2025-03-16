@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +16,8 @@ const ControlledForm = () => {
     register,
     handleSubmit,
     setValue,
+    trigger,
+    watch,
     formState: { isValid, errors },
   } = useForm<FormInput>({ resolver: yupResolver(schema), mode: 'onChange' });
 
@@ -23,6 +25,14 @@ const ControlledForm = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const watchPassword = watch('password');
+  const watchRepeatPassword = watch('repeatPassword');
+
+  useEffect(() => {
+    if (watchPassword && watchRepeatPassword) {
+      trigger('repeatPassword');
+    }
+  }, [watchPassword, watchRepeatPassword, trigger]);
 
   const convertFileToBase64 = (file: File | null): Promise<string | null> => {
     return new Promise((resolve, reject) => {
