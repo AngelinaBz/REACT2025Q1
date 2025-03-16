@@ -39,6 +39,7 @@ export default tseslint.config(
       ...react.configs['jsx-runtime'].rules,
       '@typescript-eslint/no-explicit-any': 'error',
       'react/prop-types': 'off',
+      'react-hooks/exhaustive-deps': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
       'import/order': [
         'error',

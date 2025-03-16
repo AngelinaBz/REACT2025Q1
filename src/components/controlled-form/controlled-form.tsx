@@ -60,7 +60,7 @@ const ControlledForm = () => {
       picture: convertedPicture || '',
     };
     dispatch(addControlledFormData(convertedData));
-    navigate('/');
+    navigate('/', { state: { newAddedId: convertedData.id } });
   };
 
   return (

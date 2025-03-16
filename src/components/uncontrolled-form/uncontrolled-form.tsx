@@ -52,7 +52,7 @@ const UncontrolledForm = () => {
             picture: base64String,
           };
           dispatch(addUncontrolledFormData(convertedData));
-          navigate('/');
+          navigate('/', { state: { newAddedId: convertedData.id } });
         };
         reader.readAsDataURL(file);
       } else {

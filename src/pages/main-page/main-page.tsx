@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import Card from '../../components/card/card';
 import Header from '../../components/header/header';
-import { clearLastAddedDataId } from '../../redux/slices/form-slice';
 import { RootState } from '../../redux/store';
+
 import './main-page.css';
 
 const MainPage = () => {
@@ -14,20 +15,22 @@ const MainPage = () => {
   const uncontrolledData = useSelector(
     (state: RootState) => state.formData.uncontrolledFormData
   );
-  const lastAddedId = useSelector(
-    (state: RootState) => state.formData.lastAddedDataId
-  );
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const newAddedId = location.state?.newAddedId;
 
   useEffect(() => {
-    if (lastAddedId) {
+    if (newAddedId) {
       const timer = setTimeout(() => {
-        dispatch(clearLastAddedDataId());
+        navigate(location.pathname, {
+          state: { ...location.state, newAddedId: undefined },
+        });
       }, 2000);
 
       return () => clearTimeout(timer);
     }
-  }, [lastAddedId, dispatch]);
+  }, [newAddedId, dispatch]);
 
   return (
     <div>
@@ -40,7 +43,7 @@ const MainPage = () => {
               <Card
                 key={data.id}
                 data={data}
-                isLastAdded={data.id === lastAddedId}
+                isLastAdded={data.id === newAddedId}
               />
             ))
           ) : (
@@ -54,7 +57,7 @@ const MainPage = () => {
               <Card
                 key={data.id}
                 data={data}
-                isLastAdded={data.id === lastAddedId}
+                isLastAdded={data.id === newAddedId}
               />
             ))
           ) : (
