@@ -8,6 +8,7 @@ import './main-page.css';
 const MainPage = () => {
   const [countries, setCountries] = useState<Country[] | null>(null);
   const [filteredCountries, setFilteredCountries] = useState<Country[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [regionFilter, setRegionFilter] = useState(Region.All);
   const [sortCriteria, setSortCriteria] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
@@ -24,7 +25,12 @@ const MainPage = () => {
   useEffect(() => {
     if (countries) {
       const filteredData = countries.filter((country) => {
-        return regionFilter === Region.All || country.region === regionFilter;
+        const matchesRegion =
+          regionFilter === Region.All || country.region === regionFilter;
+        const matchesSearch = country.name.common
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase());
+        return matchesRegion && matchesSearch;
       });
 
       const sortedData = [...filteredData].sort((a, b) => {
@@ -42,11 +48,17 @@ const MainPage = () => {
       });
       setFilteredCountries(sortedData);
     }
-  }, [countries, regionFilter, sortCriteria, sortOrder]);
+  }, [countries, regionFilter, sortCriteria, sortOrder, searchQuery]);
 
   return (
     <div>
       <h1>Countries</h1>
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
       <select
         onChange={(e) => setRegionFilter(e.target.value as Region)}
         value={regionFilter}
@@ -71,8 +83,8 @@ const MainPage = () => {
           onChange={(e) => setSortOrder(e.target.value)}
           value={sortOrder}
         >
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
+          <option value="asc">Asc</option>
+          <option value="desc">Desc</option>
         </select>
       </div>
       <div className="country-list">
