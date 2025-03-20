@@ -1,0 +1,23 @@
+.country-card {
+  padding: 3px;
+  width: 150px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.country-name,
+.country-population,
+.country-region {
+  margin: 0;
+}
+
+.country-img {
+  width: 100px;
+}
