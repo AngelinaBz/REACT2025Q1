@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { Card } from '../../components/card/card';
+import { Filter } from '../../components/filter/filter';
+import { Search } from '../../components/search/search';
+import Sort from '../../components/sort/sort';
 import { getCountries } from '../../services/countries-api';
 import { Country, Region } from '../../types/country';
 import './main-page.css';
@@ -50,43 +53,31 @@ const MainPage = () => {
     }
   }, [countries, regionFilter, sortCriteria, sortOrder, searchQuery]);
 
+  const handleSearch = (searchQuery: string) => {
+    setSearchQuery(searchQuery);
+  };
+
+  const handleFilter = (region: Region) => {
+    setRegionFilter(region);
+  };
+
+  const handleSortCriteriaChange = (criteria: string) => {
+    setSortCriteria(criteria);
+  };
+
+  const handleSortOrderChange = (order: string) => {
+    setSortOrder(order);
+  };
+
   return (
     <div>
       <h1>Countries</h1>
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+      <Search onSearch={handleSearch} />
+      <Filter onFilter={handleFilter} />
+      <Sort
+        onSortCriteriaChange={handleSortCriteriaChange}
+        onSortOrderChange={handleSortOrderChange}
       />
-      <select
-        onChange={(e) => setRegionFilter(e.target.value as Region)}
-        value={regionFilter}
-      >
-        {Object.values(Region).map((region) => (
-          <option key={region} value={region}>
-            {region}
-          </option>
-        ))}
-      </select>
-      <div>
-        <span>Sort by: </span>
-        <select
-          onChange={(e) => setSortCriteria(e.target.value)}
-          value={sortCriteria}
-        >
-          <option value="name">Name</option>
-          <option value="population">Population</option>
-        </select>
-        <span> Order: </span>
-        <select
-          onChange={(e) => setSortOrder(e.target.value)}
-          value={sortOrder}
-        >
-          <option value="asc">Asc</option>
-          <option value="desc">Desc</option>
-        </select>
-      </div>
       <div className="country-list">
         {filteredCountries.map((country) => (
           <Card country={country} key={country.name.common} />
