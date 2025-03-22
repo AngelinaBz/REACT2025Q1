@@ -1,54 +1,59 @@
-# React + TypeScript + Vite
+# React Performance
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## React Dev Tools Profiler
 
-Currently, two official plugins are available:
+### Before optimization
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Filtering countries by Antarctic region:
 
-## Expanding the ESLint configuration
+- Commit Duration: 2.7s
+- Render Duration: 17.7ms
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+![filter](./public/filter1.png)
+![filter](./public/filter2.png)
+![filter](./public/filter3.png)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
+2. Sorting countries: first by name in descending order, then by population in descending order, then by population in ascending order:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Commit Duration: 4.6s
+- Render Duration: 1.5ms
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+![sort](./public/sort1.png)
+![sort](./public/sort2.png)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
-```
+3. Searching countries by 'ant':
+
+- Commit Duration: 2.3s
+- Render Duration: 0.5ms
+
+![search](./public/search1.png)
+![search](./public/search2.png)
+![search](./public/search3.png)
+
+### After optimization
+
+1. Filtering countries by Antarctic region:
+
+- Commit Duration: 2.4s
+- Render Duration: 2.5ms
+
+![filter](./public/op-filter1.png)
+![filter](./public/op-filter2.png)
+![filter](./public/op-filter3.png)
+
+2. Sorting countries: first by name in descending order, then by population in descending order, then by population in ascending order:
+
+- Commit Duration: 4.5s
+- Render Duration: 0.9ms
+
+![sort](./public/op-sort1.png)
+![sort](./public/op-sort2.png)
+
+3. Searching countries by 'ant':
+
+- Commit Duration: 1.3s
+- Render Duration: 0.8ms
+
+![search](./public/op-search1.png)
+![search](./public/op-search2.png)
+![search](./public/op-search3.png)
