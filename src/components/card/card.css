@@ -1,0 +1,36 @@
+.country-card {
+  padding: 10px 5px;
+  width: 150px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow-y: scroll;
+  cursor: pointer;
+}
+
+.country-name,
+.country-population,
+.country-region {
+  margin: 0;
+}
+
+.country-img {
+  height: 100px;
+  width: 100%;
+}
+
+.country-card.visited {
+  border: 2px solid rgb(1, 70, 1);
+  background-color: #9de0abb4;
+}
+
+.visited-label {
+  color: green;
+  font-weight: bold;
+}
