@@ -27,7 +27,6 @@
 - Render Duration: 0.5ms
 
 ![search](./public/search1.png)
-![search](./public/search2.png)
 ![search](./public/search3.png)
 
 ### After optimization
