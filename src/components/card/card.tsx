@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   addVisitedCountries,
@@ -11,7 +11,7 @@ interface CardProps {
   country: Country;
 }
 
-export const Card = ({ country }: CardProps) => {
+export const Card = React.memo(function Card({ country }: CardProps) {
   const [isVisited, setIsVisited] = useState(false);
 
   useEffect(() => {
@@ -57,4 +57,4 @@ export const Card = ({ country }: CardProps) => {
       {isVisited && <p className="visited-label">Visited</p>}
     </div>
   );
-};
+});
